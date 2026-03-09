@@ -1,5 +1,9 @@
 export type EventType = "upcoming" | "past";
 
+export type EventCategory = "hackathon" | "workshop" | "talk" | "other";
+
+export type TabType = "past" | "upcoming";
+
 export interface TeamMember {
   name: string;
   role?: string;
@@ -16,13 +20,12 @@ export interface EventDetails {
   title: string;
   date: string;
   type: EventType;
+  category?: EventCategory;
   description: string;
   image?: string;
-  // For upcoming
   registrationLink?: string;
   location?: string;
   time?: string;
-  // For past
   winners?: WinnerTeam[];
   gallery?: string[];
 }
@@ -33,6 +36,7 @@ export const eventsData: EventDetails[] = [
     title: "Hackathon 2025",
     date: "2025-04-15",
     type: "upcoming",
+    category: "hackathon",
     description: "A 24-hour hackathon bringing together developers, designers, and innovators. Join us to build the future!",
     image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&q=80&w=1000",
     registrationLink: "https://example.com/register",
@@ -44,6 +48,7 @@ export const eventsData: EventDetails[] = [
     title: "React Workshop",
     date: "2025-03-20",
     type: "upcoming",
+    category: "workshop",
     description: "Learn React from basics to advanced patterns. Perfect for beginners and intermediate developers looking to level up their frontend skills.",
     image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&q=80&w=1000",
     registrationLink: "https://example.com/register-react",
@@ -55,6 +60,7 @@ export const eventsData: EventDetails[] = [
     title: "Tech Talk: AI & ML",
     date: "2025-02-10",
     type: "past",
+    category: "talk",
     description: "Exploring the fundamentals of artificial intelligence and machine learning with industry experts. We discussed neural networks, transformers, and the future of AI.",
     image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1000",
     location: "Auditorium",
@@ -89,6 +95,7 @@ export const eventsData: EventDetails[] = [
     title: "Code Sprint 2024",
     date: "2024-11-05",
     type: "past",
+    category: "hackathon",
     description: "Fast-paced competitive programming contest. Students battled it out to solve complex algorithmic challenges within a tight timeline.",
     image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=1000",
     location: "Main Computer Lab",

@@ -78,7 +78,7 @@ function GalleryGrid({ images }: { images: string[] }) {
   return (
     <div className="space-y-4">
       <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {/* Main First Image */}
+        
         <motion.div 
           layout
           className="relative aspect-video rounded-2xl overflow-hidden border border-foreground/10"
@@ -86,10 +86,10 @@ function GalleryGrid({ images }: { images: string[] }) {
           <img src={images[0]} alt="Gallery main image" className="w-full h-full object-cover" />
         </motion.div>
 
-        {/* Second Space: Folder Stack OR Expanded Grid */}
+        
         <AnimatePresence mode="popLayout">
           {!showAll ? (
-            // Folder Stack Animation
+            
             <motion.div
               layout
               initial={{ opacity: 0, scale: 0.9 }}
@@ -99,11 +99,11 @@ function GalleryGrid({ images }: { images: string[] }) {
               onClick={() => setShowAll(true)}
               className="relative aspect-video cursor-pointer select-none group"
             >
-              {/* Stack items behind */}
+              
               <div className="absolute inset-2 -top-2 rounded-2xl bg-foreground/5 border border-foreground/10 transition-transform group-hover:-translate-y-1 rotate-2" />
               <div className="absolute inset-1 w-[98%] left-1 rounded-2xl bg-foreground/10 border border-foreground/10 transition-transform group-hover:-translate-y-2 -rotate-1" />
               
-              {/* Top stack item */}
+              
               <div className="absolute inset-0 rounded-2xl overflow-hidden border border-foreground/20 shadow-lg text-foreground bg-background">
                 <img src={images[1]} alt="Gallery preview" className="w-full h-full object-cover opacity-50 transition-opacity group-hover:opacity-40" />
                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/40 backdrop-blur-[2px]">
@@ -113,7 +113,7 @@ function GalleryGrid({ images }: { images: string[] }) {
               </div>
             </motion.div>
           ) : (
-            // Expanded Rest of Images
+            
             images.slice(1).map((img, idx) => (
               <motion.div 
                 key={img}
@@ -131,7 +131,7 @@ function GalleryGrid({ images }: { images: string[] }) {
         </AnimatePresence>
       </motion.div>
       
-      {/* Show Less Button when expanded */}
+      
       <AnimatePresence>
         {showAll && (
           <motion.div
@@ -188,7 +188,7 @@ export default function EventDetailClient({ event }: { event: EventDetails }) {
         animate="visible"
         className="space-y-12"
       >
-        {/* Header Section */}
+        
         <motion.div variants={itemVariants} className="space-y-6 text-center">
           <div className="inline-block rounded-full bg-foreground/10 px-3 py-1 text-sm font-semibold capitalize text-foreground/80 mb-4">
             {event.type} Event
@@ -217,7 +217,7 @@ export default function EventDetailClient({ event }: { event: EventDetails }) {
           </div>
         </motion.div>
 
-        {/* Hero Image / Slideshow */}
+        
         {((isPast && event.gallery && event.gallery.length > 0) || event.image) && (
           <motion.div variants={itemVariants} className="relative aspect-video w-full overflow-hidden rounded-3xl border border-foreground/10 shadow-2xl">
             {isPast && event.gallery && event.gallery.length > 0 ? (
@@ -230,14 +230,14 @@ export default function EventDetailClient({ event }: { event: EventDetails }) {
         )}
 
         <div className="grid gap-12 md:grid-cols-3">
-          {/* Main Content */}
+          
           <motion.div variants={itemVariants} className="md:col-span-2 space-y-6">
             <h2 className="text-2xl font-bold">About this event</h2>
             <p className="text-lg text-foreground/80 leading-relaxed whitespace-pre-wrap">
               {event.description}
             </p>
             
-            {/* Gallery (for past events) */}
+            
             {isPast && event.gallery && event.gallery.length > 0 && (
               <div className="mt-12 space-y-6">
                 <h2 className="text-2xl font-bold">Event Gallery</h2>
@@ -246,7 +246,7 @@ export default function EventDetailClient({ event }: { event: EventDetails }) {
             )}
           </motion.div>
 
-          {/* Sidebar */}
+          
           <motion.div variants={itemVariants} className="space-y-6">
             <div className="rounded-2xl border border-foreground/10 bg-foreground/5 p-6 backdrop-blur-sm">
               <h3 className="text-xl font-semibold flex items-center gap-2 mb-6">
@@ -264,11 +264,11 @@ export default function EventDetailClient({ event }: { event: EventDetails }) {
                           const labels = ["Winner", "1st Runner Up", "2nd Runner Up"];
                           const label = labels[idx] || `Position ${idx + 1}`;
                           
-                          // Styling for Gold, Silver, Bronze
+                          
                           const colors = [
-                            "bg-yellow-500/20 text-yellow-600 dark:text-yellow-500", // Gold
-                            "bg-slate-300/50 text-slate-700 dark:text-slate-300",    // Silver
-                            "bg-amber-600/20 text-amber-700 dark:text-amber-500"     // Bronze
+                            "bg-yellow-500/20 text-yellow-600 dark:text-yellow-500", 
+                            "bg-slate-300/50 text-slate-700 dark:text-slate-300",    
+                            "bg-amber-600/20 text-amber-700 dark:text-amber-500"     
                           ];
                           const dotColor = colors[idx] || "bg-foreground/10 text-foreground";
 
@@ -307,7 +307,7 @@ export default function EventDetailClient({ event }: { event: EventDetails }) {
                         Register Now
                         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                       </span>
-                      {/* Button shine effect */}
+                      
                       <motion.div 
                         className="absolute inset-0 z-0 bg-gradient-to-r from-transparent via-background/20 to-transparent"
                         initial={{ x: "-100%" }}
