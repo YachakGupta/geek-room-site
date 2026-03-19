@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Event {
+  id               String              @id @default(uuid())
+  title            String
+  description      String
+  date             DateTime
+  location         String
+  registrationLink String?
+  image            String
+  status           String              // "upcoming" or "past"
+  category         String?             // "hackathon", "workshop", etc.
+  time             String?
+  registrationOpen Boolean             @default(true)
+  gallery          String[]            // array of image URLs
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  winners          Winner[]
+  registrations    EventRegistration[]
+}
+
+model Winner {
+  id        String   @id @default(uuid())
+  eventId   String
+  rank      String
+  teamName  String
+  members   String[]
+  photo     String?
+  
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model EventRegistration {
+  id        String   @id @default(uuid())
+  eventId   String
+  name      String
+  email     String
+  phone     String
+  college   String
+  timestamp DateTime @default(now())
+
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+}
+
+model TeamMember {
+  id        Int      @id @default(autoincrement())
+  name      String
+  role      String
+  category  String   // "Core", "Heads", "Tech", "Publicity", "Design", "Management"
+  photo     String
+  gmail     String
+  linkedin  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Setting {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  value       String   // JSON stringified value
+  updatedAt   DateTime @updatedAt
+}

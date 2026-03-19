@@ -102,21 +102,7 @@ export default function ImageUpload({ value, onChange, folder = "events" }: Imag
         className="hidden"
       />
       
-      {/* Fallback to URL input if they want to paste a URL manually, optional but useful */}
-      <div className="flex items-center gap-2 mt-2">
-        <div className="relative flex-1">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <LinkIcon className="h-4 w-4 text-zinc-500" />
-          </div>
-          <input
-            type="url"
-            placeholder="Or paste an image URL..."
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            className="w-full bg-black border border-zinc-800 rounded-lg pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-blue-500 transition-colors"
-          />
-        </div>
-      </div>
+
     </div>
   );
 }

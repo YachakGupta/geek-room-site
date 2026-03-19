@@ -1,36 +1,35 @@
 "use server";
 
-import fs from "fs/promises";
-import path from "path";
+import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-
-const getSettingsPath = () => path.join(process.cwd(), "data", "settings.json");
 
 export async function getSettings() {
   try {
-    const data = await fs.readFile(getSettingsPath(), "utf-8");
-    return JSON.parse(data);
+    const setting = await prisma.setting.findUnique({ where: { key: "global_settings" } });
+    if (setting) {
+      return JSON.parse(setting.value);
+    }
+    return { hideJoin: true }; // Default
   } catch (e) {
-    // Return default settings if file doesn't exist
-    return { hideJoin: true }; // Let's default to hidden
+    return { hideJoin: true };
   }
 }
 
 export async function setHideJoin(hideJoin: boolean) {
-  const dirPath = path.join(process.cwd(), "data");
-  
   try {
-    await fs.mkdir(dirPath, { recursive: true });
+    const current = await getSettings();
+    const newSettings = { ...current, hideJoin };
     
-    let settings = await getSettings();
-    settings.hideJoin = hideJoin;
-    
-    await fs.writeFile(getSettingsPath(), JSON.stringify(settings, null, 2));
+    await prisma.setting.upsert({
+      where: { key: "global_settings" },
+      update: { value: JSON.stringify(newSettings, null, 2) },
+      create: { key: "global_settings", value: JSON.stringify(newSettings, null, 2) }
+    });
     
     // Revalidate the entire site so layout and pages refresh
     revalidatePath("/", "layout");
     
-    return settings.hideJoin;
+    return hideJoin;
   } catch (error) {
     console.error("Failed to save settings:", error);
     throw new Error("Failed to save settings");

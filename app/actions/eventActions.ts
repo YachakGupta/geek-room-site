@@ -1,8 +1,6 @@
 "use server";
 
-import fs from "fs/promises";
-import path from "path";
-import { supabase } from "@/lib/supabase";
+import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export type Winner = {
@@ -30,19 +28,31 @@ export type EventItem = {
 
 export async function addEvent(eventData: EventItem) {
   try {
-    const filePath = path.join(process.cwd(), "data", "events.json");
-    const fileContent = await fs.readFile(filePath, "utf-8");
-    const events: EventItem[] = JSON.parse(fileContent);
+    await prisma.event.create({
+      data: {
+        id: eventData.id || undefined,
+        title: eventData.title,
+        description: eventData.description,
+        date: new Date(eventData.date),
+        location: eventData.location,
+        registrationLink: eventData.registrationLink || null,
+        image: eventData.image,
+        status: eventData.status,
+        category: eventData.category,
+        time: eventData.time,
+        registrationOpen: eventData.registrationOpen ?? true,
+        gallery: eventData.gallery || [],
+        winners: {
+          create: eventData.winners?.map(w => ({
+            rank: w.rank,
+            teamName: w.teamName,
+            members: w.members || [],
+            photo: w.photo || null
+          })) || []
+        }
+      }
+    });
 
-    // Add new event
-    events.push(eventData);
-
-    events.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-
-    // Write back
-    await fs.writeFile(filePath, JSON.stringify(events, null, 2), "utf-8");
-
-    // Revalidate events page
     revalidatePath("/events");
     revalidatePath("/admin");
 
@@ -55,19 +65,35 @@ export async function addEvent(eventData: EventItem) {
 
 export async function updateEvent(id: string, eventData: Partial<EventItem>) {
   try {
-    const filePath = path.join(process.cwd(), "data", "events.json");
-    const fileContent = await fs.readFile(filePath, "utf-8");
-    const events: EventItem[] = JSON.parse(fileContent);
-
-    const index = events.findIndex(e => e.id === id);
-    if (index === -1) {
-      return { success: false, error: "Event not found" };
+    // If winners are provided, we overwrite the existing winners for simplicity
+    if (eventData.winners) {
+      await prisma.winner.deleteMany({ where: { eventId: id } });
     }
 
-    events[index] = { ...events[index], ...eventData };
-    events.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-
-    await fs.writeFile(filePath, JSON.stringify(events, null, 2), "utf-8");
+    await prisma.event.update({
+      where: { id },
+      data: {
+        title: eventData.title,
+        description: eventData.description,
+        date: eventData.date ? new Date(eventData.date) : undefined,
+        location: eventData.location,
+        registrationLink: eventData.registrationLink,
+        image: eventData.image,
+        status: eventData.status,
+        category: eventData.category,
+        time: eventData.time,
+        registrationOpen: eventData.registrationOpen,
+        gallery: eventData.gallery,
+        winners: eventData.winners ? {
+          create: eventData.winners.map(w => ({
+            rank: w.rank,
+            teamName: w.teamName,
+            members: w.members || [],
+            photo: w.photo || null
+          }))
+        } : undefined
+      }
+    });
 
     revalidatePath("/events");
     revalidatePath("/admin");
@@ -81,18 +107,7 @@ export async function updateEvent(id: string, eventData: Partial<EventItem>) {
 
 export async function deleteEvent(id: string) {
   try {
-    const filePath = path.join(process.cwd(), "data", "events.json");
-    const fileContent = await fs.readFile(filePath, "utf-8");
-    const events: EventItem[] = JSON.parse(fileContent);
-
-    const index = events.findIndex(e => e.id === id);
-    if (index === -1) {
-      return { success: false, error: "Event not found" };
-    }
-
-    events.splice(index, 1);
-
-    await fs.writeFile(filePath, JSON.stringify(events, null, 2), "utf-8");
+    await prisma.event.delete({ where: { id } });
 
     revalidatePath("/events");
     revalidatePath("/admin");
@@ -113,18 +128,15 @@ export async function registerForEvent(registrationData: {
   college: string;
 }) {
   try {
-    const { error } = await supabase.from("events_registration").insert([
-      {
-        event_id: registrationData.eventId,
+    await prisma.eventRegistration.create({
+      data: {
+        eventId: registrationData.eventId,
         name: registrationData.name,
         email: registrationData.email,
         phone: registrationData.phone,
         college: registrationData.college,
-        timestamp: new Date().toISOString(),
-      },
-    ]);
-
-    if (error) throw error;
+      }
+    });
 
     return { success: true };
   } catch (error: any) {
@@ -135,42 +147,55 @@ export async function registerForEvent(registrationData: {
 
 export async function getEvents(): Promise<EventItem[]> {
   try {
-    const filePath = path.join(process.cwd(), "data", "events.json");
-    const fileContent = await fs.readFile(filePath, "utf-8");
-    const events: EventItem[] = JSON.parse(fileContent);
-
-    const todayDate = new Date();
-    todayDate.setHours(0,0,0,0); // reset time to start of day for accurate comparison
-
-    // Auto-transition: change status to "past" if date is strictly before today
-    const modifiedEvents = events.map(e => {
-      const eventDate = new Date(e.date);
-      let newStatus = e.status;
-      
-      // If event's scheduled date is in the past, it's a past event.
-      if (newStatus === "upcoming" && eventDate < todayDate) {
-         newStatus = "past";
-      }
-
-      return {
-        ...e,
-        status: newStatus
-      };
+    const rawEvents = await prisma.event.findMany({
+      include: { winners: true },
+      orderBy: { date: "asc" }
     });
 
-    const upcoming = modifiedEvents.filter(e => e.status === "upcoming");
-    const past = modifiedEvents.filter(e => e.status === "past");
+    const todayDate = new Date();
+    todayDate.setHours(0,0,0,0);
 
-    // Upcoming: Ascending (closest first)
-    upcoming.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    
-    // Past: Descending (most recent first)
+    const upcoming: any[] = [];
+    const past: any[] = [];
+
+    for (const e of rawEvents) {
+      let status = e.status;
+      
+      // Auto-transition to past
+      if (status === "upcoming" && e.date < todayDate) {
+        status = "past";
+        // Update DB in background seamlessly
+        prisma.event.update({ where: { id: e.id }, data: { status: "past" } }).catch(console.error);
+      }
+
+      const formatted = {
+        ...e,
+        date: e.date.toISOString().split('T')[0] || e.date.toISOString(), 
+        status: status as "upcoming" | "past",
+        category: e.category || undefined,
+        time: e.time || undefined,
+        registrationLink: e.registrationLink || undefined,
+        winners: e.winners.map(w => ({
+          rank: w.rank,
+          teamName: w.teamName,
+          members: w.members,
+          photo: w.photo || undefined
+        }))
+      };
+
+      if (status === "upcoming") {
+        upcoming.push(formatted);
+      } else {
+        past.push(formatted);
+      }
+    }
+
+    // Sort past descending
     past.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-    return [...upcoming, ...past];
+    return [...upcoming, ...past] as EventItem[];
   } catch (error: any) {
     console.error("Failed to fetch events", error);
     return [];
   }
 }
-

@@ -1,7 +1,6 @@
 "use server";
 
-import fs from "fs/promises";
-import path from "path";
+import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export type TeamCategory = "Core" | "Heads" | "Tech" | "Publicity" | "Design" | "Management";
@@ -16,13 +15,13 @@ export type TeamMember = {
   linkedin: string;
 };
 
-const getFilePath = () => path.join(process.cwd(), "data", "team.json");
-
 export async function getMembers(): Promise<TeamMember[]> {
   try {
-    const filePath = getFilePath();
-    const fileContent = await fs.readFile(filePath, "utf-8");
-    return JSON.parse(fileContent);
+    const members = await prisma.teamMember.findMany({
+      orderBy: { id: "asc" }
+    });
+    // Typecast back to the specific Next.js component contract expectations seamlessly
+    return members as unknown as TeamMember[];
   } catch (error: any) {
     console.error("Failed to fetch team members", error);
     return [];
@@ -31,19 +30,9 @@ export async function getMembers(): Promise<TeamMember[]> {
 
 export async function addMember(memberData: Omit<TeamMember, "id">) {
   try {
-    const filePath = getFilePath();
-    const fileContent = await fs.readFile(filePath, "utf-8");
-    const members: TeamMember[] = JSON.parse(fileContent);
-
-    const newId = members.length > 0 ? Math.max(...members.map((m) => m.id)) + 1 : 1;
-    const newMember: TeamMember = {
-      id: newId,
-      ...memberData,
-    };
-
-    members.push(newMember);
-
-    await fs.writeFile(filePath, JSON.stringify(members, null, 2), "utf-8");
+    await prisma.teamMember.create({
+      data: memberData
+    });
 
     revalidatePath("/team");
     revalidatePath("/admin/team");
@@ -57,18 +46,10 @@ export async function addMember(memberData: Omit<TeamMember, "id">) {
 
 export async function updateMember(id: number, memberData: Partial<TeamMember>) {
   try {
-    const filePath = getFilePath();
-    const fileContent = await fs.readFile(filePath, "utf-8");
-    const members: TeamMember[] = JSON.parse(fileContent);
-
-    const index = members.findIndex((m) => m.id === id);
-    if (index === -1) {
-      return { success: false, error: "Member not found" };
-    }
-
-    members[index] = { ...members[index], ...memberData };
-
-    await fs.writeFile(filePath, JSON.stringify(members, null, 2), "utf-8");
+    await prisma.teamMember.update({
+      where: { id },
+      data: memberData
+    });
 
     revalidatePath("/team");
     revalidatePath("/admin/team");
@@ -82,18 +63,9 @@ export async function updateMember(id: number, memberData: Partial<TeamMember>) 
 
 export async function deleteMember(id: number) {
   try {
-    const filePath = getFilePath();
-    const fileContent = await fs.readFile(filePath, "utf-8");
-    const members: TeamMember[] = JSON.parse(fileContent);
-
-    const index = members.findIndex((m) => m.id === id);
-    if (index === -1) {
-      return { success: false, error: "Member not found" };
-    }
-
-    members.splice(index, 1);
-
-    await fs.writeFile(filePath, JSON.stringify(members, null, 2), "utf-8");
+    await prisma.teamMember.delete({
+      where: { id }
+    });
 
     revalidatePath("/team");
     revalidatePath("/admin/team");
