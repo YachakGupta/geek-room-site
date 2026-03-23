@@ -9,9 +9,10 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminTeamPage() {
   const user = await currentUser();
-  const isAdmin = user?.publicMetadata?.role === "admin";
+  const role = user?.publicMetadata?.role as string | undefined;
+  const isAdminOrOwner = role === "admin" || role === "owner";
 
-  if (!isAdmin) {
+  if (!isAdminOrOwner) {
     redirect("/");
   }
 

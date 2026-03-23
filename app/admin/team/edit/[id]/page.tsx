@@ -21,10 +21,11 @@ export default async function EditMemberPage({ params }: { params: Promise<{ id:
   }
 
   const user = await currentUser();
-  const isAdmin = user?.publicMetadata?.role === "admin";
+  const role = user?.publicMetadata?.role as string | undefined;
+  const isAdmin = role === "admin" || role === "owner";
   const userEmail = user?.primaryEmailAddress?.emailAddress;
 
-  // Authorization check: Only admin or the exact team member can access this page
+  // Authorization check: Only admin/owner or the exact team member can access this page
   if (!isAdmin && (!userEmail || member.gmail !== userEmail)) {
     redirect("/team");
   }

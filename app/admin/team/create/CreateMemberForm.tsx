@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { addMember, TeamCategory } from "@/app/actions/teamActions";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import ImageUpload from "@/components/ImageUpload";
 
 export default function CreateMemberForm() {
   const router = useRouter();
@@ -12,10 +13,10 @@ export default function CreateMemberForm() {
     name: "",
     role: "",
     category: "Core" as TeamCategory,
-    photo: "",
     gmail: "",
     linkedin: "",
   });
+  const [photo, setPhoto] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,7 +27,7 @@ export default function CreateMemberForm() {
     setLoading(true);
     setError(null);
 
-    const res = await addMember(formData);
+    const res = await addMember({ ...formData, photo });
 
     if (res.success) {
       router.push("/admin/team");
@@ -99,14 +100,11 @@ export default function CreateMemberForm() {
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium text-zinc-300">Photo URL</label>
-          <input
-            type="text"
-            name="photo"
-            value={formData.photo}
-            onChange={handleChange}
-            className="w-full bg-black border border-zinc-800 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500 transition-colors"
-            placeholder="e.g. /john.jpg or https://example.com/photo.jpg"
+          <label className="text-sm font-medium text-zinc-300">Photo</label>
+          <ImageUpload
+            value={photo}
+            onChange={setPhoto}
+            folder="team"
           />
         </div>
 
