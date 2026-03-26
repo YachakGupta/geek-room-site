@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^7.0.1",
-    "@prisma/client": "^6.19.2",
+    "@gsap/react": "^2.1.2",
     "@supabase/supabase-js": "^2.99.1",
     "@tsparticles/engine": "^3.9.1",
     "@tsparticles/interaction-external-bubble": "^3.9.1",
@@ -18,6 +18,7 @@
     "@tsparticles/react": "^3.0.0",
     "@tsparticles/slim": "^3.9.1",
     "framer-motion": "^12.35.0",
+    "gsap": "^3.14.2",
     "lucide-react": "^0.577.0",
     "next": "16.1.6",
     "react": "19.2.3",

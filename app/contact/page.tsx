@@ -41,11 +41,11 @@ export default function ContactPage() {
               <div className="relative bg-[#050505] rounded-xl p-6 border border-white/5">
                 <h3 className="text-[#FF8C00] font-mono text-sm tracking-widest mb-2 uppercase">Network Nodes</h3>
                 <div className="flex gap-4 text-[#ededed]/70">
-                  <a href="#" className="hover:text-[#FF8C00] transition-colors">LinkedIn</a>
+                  <a href="https://www.linkedin.com/in/geek-room-jims-emtc-0078b43b5?utm_source=share_via&utm_content=profile&utm_medium=member_android" className="hover:text-[#FF8C00] transition-colors">LinkedIn</a>
                   <span className="text-white/20">|</span>
-                  <a href="#" className="hover:text-[#FF8C00] transition-colors">Instagram</a>
+                  <a href="https://www.instagram.com/geekroom.jemtec/?hl=en" className="hover:text-[#FF8C00] transition-colors">Instagram</a>
                   <span className="text-white/20">|</span>
-                  <a href="#" className="hover:text-[#FF8C00] transition-colors">GitHub</a>
+                  <a href="https://github.com/sahil7700/geek-room-site" className="hover:text-[#FF8C00] transition-colors">GitHub</a>
                 </div>
               </div>
             </div>
