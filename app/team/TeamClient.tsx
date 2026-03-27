@@ -285,32 +285,43 @@ export default function TeamClient({ members, loggedInEmail }: TeamClientProps) 
         </div>
       </section>
 
-      {teamDepartments.map((dept, index) => (
-        <section key={dept.title} className="team-section" style={{ paddingTop: index === 0 ? '6rem' : '2rem' }}>
-          <div className="section-header reveal">
-            <span className="section-badge">{dept.title}</span>
-            <h2 className="section-title">{dept.title} TEAM</h2>
-          </div>
-
-          <div className="team-grid">
-            {dept.members.map((member, idx) => (
-              <div className="team-member" key={member.id}>
-                <div className="team-member-image">
-                  <img src={member.photo} alt={member.name} />
-                </div>
-                <div className="team-member-info">
-                  <h4 className="team-member-name">{member.name}</h4>
-                  <p className="team-member-role">{member.role}</p>
-                  <div className="team-member-socials">
-                    {member.linkedin && <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="social-link">in</a>}
-                    {member.gmail && member.gmail !== '—' && <a href={`mailto:${member.gmail}`} className="social-link">✉</a>}
-                  </div>
-                </div>
-              </div>
-            ))}
+      {members.length === 0 ? (
+        <section className="team-section" style={{ paddingTop: '6rem' }}>
+          <div className="section-header active">
+            <h2 className="section-title" style={{ color: '#FF4444' }}>SYSTEM OFFLINE</h2>
+            <p className="section-description" style={{ color: 'rgba(237,237,237,0.6)' }}>
+              Failed to establish connection with the central database. Team nodes cannot be loaded at this time. Please verify database connectivity and credentials.
+            </p>
           </div>
         </section>
-      ))}
+      ) : (
+        teamDepartments.map((dept, index) => (
+          <section key={dept.title} className="team-section" style={{ paddingTop: index === 0 ? '6rem' : '2rem' }}>
+            <div className="section-header reveal">
+              <span className="section-badge">{dept.title}</span>
+              <h2 className="section-title">{dept.title} TEAM</h2>
+            </div>
+  
+            <div className="team-grid">
+              {dept.members.map((member, idx) => (
+                <div className="team-member" key={member.id}>
+                  <div className="team-member-image">
+                    <img src={member.photo} alt={member.name} />
+                  </div>
+                  <div className="team-member-info">
+                    <h4 className="team-member-name">{member.name}</h4>
+                    <p className="team-member-role">{member.role}</p>
+                    <div className="team-member-socials">
+                      {member.linkedin && <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="social-link">in</a>}
+                      {member.gmail && member.gmail !== '—' && <a href={`mailto:${member.gmail}`} className="social-link">✉</a>}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        ))
+      )}
     </div>
   );
 }

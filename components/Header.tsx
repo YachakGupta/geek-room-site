@@ -7,7 +7,7 @@ import { useUser, UserButton } from "@clerk/nextjs";
 
 const navLinks = [
   { href: "/", label: "Origin" },
-  { href: "/#about", label: "About" },
+  { href: "/about", label: "About" },
   { href: "/team", label: "Team" },
   { href: "/events", label: "Events" },
   { href: "/gallery", label: "Gallery" },

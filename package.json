@@ -11,6 +11,7 @@
   "dependencies": {
     "@clerk/nextjs": "^7.0.1",
     "@gsap/react": "^2.1.2",
+    "@prisma/client": "^6.19.2",
     "@supabase/supabase-js": "^2.99.1",
     "@tsparticles/engine": "^3.9.1",
     "@tsparticles/interaction-external-bubble": "^3.9.1",

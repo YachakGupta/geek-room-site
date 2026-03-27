@@ -23,7 +23,7 @@ export async function getMembers(): Promise<TeamMember[]> {
     // Typecast back to the specific Next.js component contract expectations seamlessly
     return members as unknown as TeamMember[];
   } catch (error: any) {
-    console.error("Failed to fetch team members", error);
+    console.error("Failed to fetch team members: Database connection or Prisma query failed.", error);
     return [];
   }
 }

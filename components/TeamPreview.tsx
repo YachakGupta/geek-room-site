@@ -54,14 +54,24 @@ export function TeamPreview({ members }: { members: TeamMember[] }) {
 
       {/* The Floating Wall Grid */}
       <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-12 flex flex-wrap justify-center items-center gap-4 md:gap-8 lg:gap-12 min-h-[60vh]">
-        {displayMembers.map((member, i) => (
-          <BuilderNode 
-            key={member.id} 
-            member={member} 
-            index={i} 
-            onClick={() => setSelectedMember(member)} 
-          />
-        ))}
+        {displayMembers.length > 0 ? (
+          displayMembers.map((member, i) => (
+            <BuilderNode 
+              key={member.id} 
+              member={member} 
+              index={i} 
+              onClick={() => setSelectedMember(member)} 
+            />
+          ))
+        ) : (
+          <div className="col-span-full flex flex-col items-center justify-center p-8 bg-black/40 backdrop-blur-xl border border-red-500/20 rounded-2xl w-full max-w-2xl">
+            <svg className="w-12 h-12 text-red-500/50 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <h3 className="text-xl font-bold text-red-400 mb-2 font-mono">System Offline</h3>
+            <p className="text-gray-400 text-center font-mono text-sm">Failed to connect to the builder database. Core members could not be loaded at this time.</p>
+          </div>
+        )}
       </div>
 
       {/* Builder Profile Modal */}

@@ -175,7 +175,7 @@ export async function getEvents(): Promise<EventItem[]> {
         category: e.category || undefined,
         time: e.time || undefined,
         registrationLink: e.registrationLink || undefined,
-        winners: e.winners.map(w => ({
+        winners: e.winners.map((w: any) => ({
           rank: w.rank,
           teamName: w.teamName,
           members: w.members,
