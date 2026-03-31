@@ -21,23 +21,25 @@ const MEMBERS = [
   { id: 9, name: "Abhinav Jha", role: "Tech", tier: "member" },
   { id: 10, name: "Yachak Gupta", role: "Tech", tier: "member" },
   { id: 11, name: "Dhairya Jindal", role: "Tech", tier: "member" },
-  { id: 12, name: "Divyanshi Tiwari", role: "Publicity", tier: "member" },
-  { id: 13, name: "Arya Singh", role: "Publicity", tier: "member" },
-  { id: 14, name: "Aishwarya Singh", role: "Publicity", tier: "member" },
-  { id: 15, name: "Manvi Yadav", role: "Publicity", tier: "member" },
-  { id: 16, name: "Bhavya Kokaria", role: "Publicity", tier: "member" },
-  { id: 17, name: "Mokshya Dangwal", role: "Design", tier: "member" },
-  { id: 18, name: "Rajat Popli", role: "Design", tier: "member" },
-  { id: 19, name: "Pushp Singla", role: "Design", tier: "member" },
-  { id: 20, name: "Sudhanshu Verma", role: "Design", tier: "member" },
+  { id: 12, name: "Md Hamid Zahiri", role: "Tech", tier: "member" },
+  { id: 13, name: "Abhinav Sharma", role: "Management", tier: "member" },
+  { id: 14, name: "Divyanshi Tiwari", role: "Publicity", tier: "member" },
+  { id: 15, name: "Arya Singh", role: "Publicity", tier: "member" },
+  { id: 16, name: "Aishwarya Singh", role: "Publicity", tier: "member" },
+  { id: 17, name: "Manvi Yadav", role: "Publicity", tier: "member" },
+  { id: 18, name: "Bhavya Kokaria", role: "Tech", tier: "member" },
+  { id: 19, name: "Mokshya Dangwal", role: "Design", tier: "member" },
+  { id: 20, name: "Rajat Popli", role: "Design", tier: "member" },
+  { id: 21, name: "Pushp Singla", role: "Design", tier: "member" },
+  { id: 22, name: "Sudhanshu Verma", role: "Design", tier: "member" },
   { id: 23, name: "Shailendra Pal", role: "Management", tier: "member" },
   { id: 24, name: "Abhinav Sharma", role: "Management", tier: "member" },
 ];
 
 const TIER = {
-  core: { color: "#FFFFFF", radius: 13 },
+  core: { color: "#F2F2F2", radius: 10 },
   head: { color: "#FF8C00", radius: 9 },
-  member: { color: "#00F2FF", radius: 5 },
+  member: { color: "#4F9EFF", radius: 5 },
 } as const;
 
 type Tier = keyof typeof TIER;
@@ -200,8 +202,8 @@ export function NetworkNodes() {
             (isHovered ? 0.35 : 0.12);
 
       const glowRGB =
-        n.color === "#FFFFFF" ? "255,255,255" :
-          n.color === "#FF8C00" ? "255,140,0" :
+        n.color === "#F2F2F2" ? "255,255,255" :
+          n.color === "#E85A2A" ? "255,140,0" :
             "0,242,255";
 
       const halo = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, glowRadius);
@@ -332,13 +334,13 @@ export function NetworkNodes() {
 
       {/* Header */}
       <div className="mb-8">
-        <span className="text-[#00F2FF] font-mono text-xs tracking-[0.3em] uppercase flex items-center gap-4 mb-5">
-          <span className="w-8 h-px bg-[#00F2FF]" />
+        <span className="text-[#4F9EFF] font-mono text-xs tracking-[0.3em] uppercase flex items-center gap-4 mb-5">
+          <span className="w-8 h-px bg-[#4F9EFF]" />
           Community Network
         </span>
         <div className="flex flex-wrap items-end gap-6">
           <h2 className="text-5xl md:text-7xl font-black tracking-tighter">
-            THE <span className="text-[#00F2FF]">NETWORK</span>
+            THE <span className="text-[#4F9EFF]">NETWORK</span>
           </h2>
           <p className="font-mono text-sm text-[#ededed]/30 mb-2 tracking-wider">
             Hover nodes to identify members
@@ -381,7 +383,7 @@ export function NetworkNodes() {
       <div className="flex items-center gap-8 mt-4">
         <div className="flex items-center gap-2">
           <div className="w-3.5 h-3.5 rounded-full bg-white"
-            style={{ boxShadow: "0 0 12px rgba(255,255,255,0.8)" }} />
+            style={{ boxShadow: "0 0 12px #F2F2F2" }} />
           <span className="font-mono text-[10px] text-[#ededed]/30 tracking-widest uppercase">Core Team</span>
         </div>
         <div className="flex items-center gap-2">
@@ -391,7 +393,7 @@ export function NetworkNodes() {
         </div>
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-[#00F2FF]"
-            style={{ boxShadow: "0 0 6px #00F2FF" }} />
+            style={{ boxShadow: "0 0 6px #4F9EFF" }} />
           <span className="font-mono text-[10px] text-[#ededed]/30 tracking-widest uppercase">Members</span>
         </div>
       </div>

@@ -53,7 +53,7 @@ export function DynamicBackground() {
       <div
         className="cyber-grid absolute inset-0 opacity-[0.025]"
         style={{
-          backgroundImage: `linear-gradient(#00F2FF 1px, transparent 1px), linear-gradient(90deg, #00F2FF 1px, transparent 1px)`,
+          backgroundImage: `linear-gradient(#169B9B 1px, transparent 1px), linear-gradient(90deg, "#4F9EFF 1px, transparent 1px)`,
           backgroundSize: "50px 50px",
         }}
       />
