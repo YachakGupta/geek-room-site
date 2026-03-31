@@ -1,24 +1,29 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Syne, Inter } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
 import { getSettings } from "@/app/actions/settings";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const syne = Syne({
+  variable: "--font-syne",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "GEEKROOM JIMSEMTC — Tech Society",
-  description: "Official website of GEEKROOM, the tech society at JIMSEMTC. Events, projects, and community.",
+  title: "Geek Room — Student Tech Society at JEMTEC",
+  description:
+    "Geek Room is the builder-led student tech society at JEMTEC. We run hackathons, workshops, and events that turn curiosity into real-world skills.",
 };
 
 export const viewport: Viewport = {
@@ -39,7 +44,8 @@ export default async function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
+          className={`${syne.variable} ${inter.variable} flex min-h-screen flex-col antialiased`}
+          style={{ backgroundColor: "#050505", color: "#ededed" }}
         >
           <Header hideJoin={settings.hideJoin} />
           <div className="flex-1">{children}</div>

@@ -147,6 +147,17 @@ export async function registerForEvent(registrationData: {
 
 export async function getEvents(): Promise<EventItem[]> {
   try {
+    if (!process.env.DATABASE_URL) {
+      console.warn("DATABASE_URL is missing. Falling back to local events.json");
+      const fs = require('fs');
+      const path = require('path');
+      const dataPath = path.join(process.cwd(), 'data', 'events.json');
+      if (fs.existsSync(dataPath)) {
+        return JSON.parse(fs.readFileSync(dataPath, 'utf-8')) as EventItem[];
+      }
+      return [];
+    }
+
     const rawEvents = await prisma.event.findMany({
       include: { winners: true },
       orderBy: { date: "asc" }
@@ -175,7 +186,7 @@ export async function getEvents(): Promise<EventItem[]> {
         category: e.category || undefined,
         time: e.time || undefined,
         registrationLink: e.registrationLink || undefined,
-        winners: e.winners.map(w => ({
+        winners: e.winners.map((w: any) => ({
           rank: w.rank,
           teamName: w.teamName,
           members: w.members,

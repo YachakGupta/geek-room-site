@@ -3,179 +3,238 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
-import { X, Github, Linkedin, ExternalLink, Activity } from "lucide-react";
+import { X, Github, Linkedin, ArrowRight } from "lucide-react";
 import { TeamMember } from "@/app/actions/teamActions";
-
-const STATUSES = ["Building", "Shipping", "Learning", "Exploring"];
-const MOCK_SKILLS = ["React", "Next.js", "AI", "Web3", "UI/UX", "Python", "Node.js", "Solidity"];
 
 export function TeamPreview({ members }: { members: TeamMember[] }) {
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
+  const displayMembers = members.slice(0, 12);
 
-  // Pick a subset or all members to show in the wall
-  const displayMembers = members.slice(0, 16);
-
-  // Esc key to close modal
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setSelectedMember(null);
+      if (e.key === "Escape") setSelectedMember(null);
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   return (
-    <section id="builder-wall" className="relative pt-32 pb-32 bg-[#050505] min-h-screen flex flex-col items-center justify-center overflow-hidden border-t border-white/5">
-      {/* Dynamic Background */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,242,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,242,255,0.02)_1px,transparent_1px)] bg-[size:60px_60px] [mask-image:radial-gradient(ellipse_70%_70%_at_50%_50%,#000_10%,transparent_100%)]" />
-        <motion.div 
-          animate={{ opacity: [0.1, 0.2, 0.1], scale: [1, 1.1, 1] }} 
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(0,242,255,0.08)_0%,transparent_60%)] rounded-full blur-3xl"
-        />
-      </div>
+    <section
+      id="core-team"
+      className="relative py-32 overflow-hidden"
+      style={{ background: "#0A0A0A" }}
+    >
+      {/* Top divider */}
+      <div
+        className="absolute top-0 left-0 right-0 h-px"
+        style={{
+          background:
+            "linear-gradient(90deg, transparent, rgba(255,255,255,0.07) 40%, rgba(255,255,255,0.07) 60%, transparent)",
+        }}
+      />
 
-      {/* Header Container */}
-      <div className="relative z-20 w-full max-w-7xl mx-auto px-4 mb-20 md:mb-32 flex flex-col md:flex-row justify-between items-end gap-6">
-        <div>
-          <div className="flex items-center gap-2 mb-4">
-            <Activity className="w-5 h-5 text-[#00F2FF]" />
-            <span className="font-mono text-sm tracking-widest text-[#00F2FF] uppercase">System Nodes Online</span>
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
+        {/* Header */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
+          <div>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="flex items-center gap-3 mb-6"
+            >
+              <div className="h-px w-8" style={{ backgroundColor: "#00F2FF" }} />
+              <span
+                className="text-xs font-medium tracking-[0.2em] uppercase"
+                style={{ color: "#00F2FF", fontFamily: "'Inter', sans-serif" }}
+              >
+                Core Team
+              </span>
+            </motion.div>
+
+            <motion.h2
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="leading-[1.05]"
+              style={{
+                fontFamily: "'Syne', system-ui, sans-serif",
+                fontWeight: 800,
+                fontSize: "clamp(2.2rem, 5vw, 3.5rem)",
+                color: "#ededed",
+                letterSpacing: "-0.02em",
+              }}
+            >
+              The people behind it.
+            </motion.h2>
           </div>
-          <h2 className="text-5xl md:text-7xl font-bold text-white uppercase tracking-wider drop-shadow-[0_0_15px_rgba(0,242,255,0.3)]" style={{ fontFamily: "'Bebas Neue', sans-serif" }}>
-            Live Builder Wall
-          </h2>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <Link
+              href="/team"
+              className="inline-flex items-center gap-2 text-sm font-medium transition-all duration-200"
+              style={{
+                color: "rgba(255,255,255,0.5)",
+                fontFamily: "'Inter', sans-serif",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "#00F2FF";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.5)";
+              }}
+            >
+              View full team
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
         </div>
-        <Link href="/team" className="font-mono text-xs uppercase tracking-widest text-gray-400 hover:text-[#00F2FF] transition-colors flex items-center gap-2 border-b border-white/10 hover:border-[#00F2FF]/50 pb-1">
-          Explore full system <ExternalLink className="w-3 h-3" />
-        </Link>
+
+        {/* Team Grid */}
+        {displayMembers.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {displayMembers.map((member, i) => (
+              <MemberCard
+                key={member.id}
+                member={member}
+                index={i}
+                onClick={() => setSelectedMember(member)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div
+            className="text-center py-20 rounded-2xl"
+            style={{
+              background: "#111111",
+              border: "1px solid rgba(255,255,255,0.06)",
+            }}
+          >
+            <p
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                color: "rgba(255,255,255,0.35)",
+                fontSize: "0.9rem",
+              }}
+            >
+              Team information coming soon.
+            </p>
+          </div>
+        )}
       </div>
 
-      {/* The Floating Wall Grid */}
-      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 md:px-12 flex flex-wrap justify-center items-center gap-4 md:gap-8 lg:gap-12 min-h-[60vh]">
-        {displayMembers.map((member, i) => (
-          <BuilderNode 
-            key={member.id} 
-            member={member} 
-            index={i} 
-            onClick={() => setSelectedMember(member)} 
-          />
-        ))}
-      </div>
-
-      {/* Builder Profile Modal */}
+      {/* Member Modal */}
       <AnimatePresence>
         {selectedMember && (
-          <BuilderModal member={selectedMember} onClose={() => setSelectedMember(null)} />
+          <MemberModal member={selectedMember} onClose={() => setSelectedMember(null)} />
         )}
       </AnimatePresence>
     </section>
   );
 }
 
-function BuilderNode({ member, index, onClick }: { member: TeamMember, index: number, onClick: () => void }) {
-  // Deterministic randomness
-  const status = STATUSES[index % STATUSES.length];
-  const delay = (index % 5) * 0.2;
-  const driftY = 10 + (index % 10);
-  const driftX = 5 + (index % 5);
-  
-  // Assign 2 random skills based on index to mock data if non-existent
-  const memberSkills = [
-    MOCK_SKILLS[index % MOCK_SKILLS.length],
-    MOCK_SKILLS[(index + 3) % MOCK_SKILLS.length]
-  ];
-
-  // Mock activity pulse firing periodically
-  const [isPulsing, setIsPulsing] = useState(false);
-  useEffect(() => {
-    // Random interval between 4s and 12s
-    const pulseInterval = 4000 + (Math.random() * 8000);
-    const intervalId = setInterval(() => {
-      setIsPulsing(true);
-      setTimeout(() => setIsPulsing(false), 1500); // 1.5s active pulse
-    }, pulseInterval);
-    return () => clearInterval(intervalId);
-  }, []);
-
+function MemberCard({
+  member,
+  index,
+  onClick,
+}: {
+  member: TeamMember;
+  index: number;
+  onClick: () => void;
+}) {
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8, y: 30 }}
-      whileInView={{ opacity: 1, scale: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.6, delay: delay }}
-      className="relative z-10"
+    <motion.button
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.6, delay: (index % 6) * 0.07, ease: [0.22, 1, 0.36, 1] }}
+      onClick={onClick}
+      className="group text-left w-full rounded-2xl p-4 transition-all duration-300"
+      style={{
+        background: "transparent",
+        border: "1px solid transparent",
+      }}
+      onMouseEnter={(e) => {
+        (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.04)";
+        (e.currentTarget as HTMLElement).style.borderColor = "rgba(0,242,255,0.12)";
+        (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)";
+      }}
+      onMouseLeave={(e) => {
+        (e.currentTarget as HTMLElement).style.background = "transparent";
+        (e.currentTarget as HTMLElement).style.borderColor = "transparent";
+        (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+      }}
     >
-      <motion.div
-        animate={{ y: [0, -driftY, 0], x: [0, driftX, 0] }}
-        transition={{ duration: 6 + (index % 4), repeat: Infinity, ease: "easeInOut", delay: delay }}
-        onClick={onClick}
-        whileHover={{ scale: 1.05, zIndex: 40 }}
-        className="group cursor-pointer relative flex flex-col items-center"
+      {/* Avatar */}
+      <div
+        className="w-full aspect-square rounded-xl overflow-hidden mb-3"
+        style={{ background: "#111111" }}
       >
-        {/* The Node Glass Card */}
-        <div className="relative flex flex-col items-center justify-center p-4 rounded-[2rem] bg-black/40 backdrop-blur-xl border border-white/10 transition-all duration-500 hover:bg-black/80 hover:border-[#00F2FF]/50 shadow-[0_0_15px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(0,242,255,0.2)]">
-          
-          {/* Status Badge (The Live Element) */}
-          <div className="absolute -top-3 px-3 py-1 bg-[#111] border rounded-full flex items-center gap-1.5 transition-colors duration-500" 
-               style={{ borderColor: isPulsing ? '#00FF66' : 'rgba(255,255,255,0.1)' }}>
-            <motion.div 
-              animate={isPulsing ? { scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5] } : {}}
-              transition={{ repeat: Infinity, duration: 1 }}
-              className="w-1.5 h-1.5 rounded-full"
-              style={{ backgroundColor: isPulsing ? '#00FF66' : '#555', boxShadow: isPulsing ? '0 0 5px #00FF66' : 'none' }}
-            />
-            <span className="text-[9px] font-mono tracking-widest uppercase" style={{ color: isPulsing ? '#00FF66' : '#777' }}>
-              {status}
-            </span>
+        {member.photo ? (
+          <img
+            src={member.photo}
+            alt={member.name}
+            className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
+            style={{ filter: "grayscale(20%)" }}
+          />
+        ) : (
+          <div
+            className="w-full h-full flex items-center justify-center"
+            style={{
+              fontFamily: "'Syne', sans-serif",
+              fontWeight: 800,
+              fontSize: "1.75rem",
+              color: "rgba(0,242,255,0.3)",
+            }}
+          >
+            {member.name[0]}
           </div>
+        )}
+      </div>
 
-          {/* Avatar Ring */}
-          <div className="relative w-24 h-24 mt-2 rounded-full p-1 border-2 border-transparent transition-colors duration-500 group-hover:border-[#00F2FF]/60">
-            {/* Pulsing ring during activity */}
-            {isPulsing && (
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: [0, 0.4, 0], scale: [0.8, 1.3, 1.5] }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
-                className="absolute inset-0 rounded-full border border-[#00FF66]"
-              />
-            )}
-            
-            <div className="w-full h-full rounded-full overflow-hidden bg-[#111] flex items-center justify-center">
-              {member.photo ? (
-                <img src={member.photo} alt={member.name} className="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" />
-              ) : (
-                <span className="font-mono text-2xl text-white/50">{member.name[0]}</span>
-              )}
-            </div>
-          </div>
-
-          {/* Name & Role */}
-          <div className="mt-4 text-center">
-            <h3 className="text-white font-bold text-sm tracking-wide group-hover:text-[#00F2FF] transition-colors">{member.name}</h3>
-            <p className="text-[10px] font-mono text-gray-400 mt-1 uppercase tracking-widest">{member.role || "Core"}</p>
-          </div>
-
-          {/* Expanded Hover Skills (Desktop mostly) */}
-          <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-max opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 pointer-events-none hidden md:flex flex-wrap gap-1 justify-center z-50">
-            {memberSkills.map(skill => (
-               <span key={skill} className="px-2 py-1 rounded bg-[#00F2FF]/10 border border-[#00F2FF]/30 text-[9px] font-mono text-[#00F2FF] uppercase">{skill}</span>
-            ))}
-          </div>
-
-        </div>
-      </motion.div>
-    </motion.div>
+      {/* Name + Role */}
+      <div>
+        <h3
+          className="leading-snug truncate"
+          style={{
+            fontFamily: "'Syne', sans-serif",
+            fontWeight: 600,
+            fontSize: "0.875rem",
+            color: "#ededed",
+            letterSpacing: "-0.01em",
+          }}
+        >
+          {member.name}
+        </h3>
+        <p
+          className="mt-0.5 truncate"
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: "0.75rem",
+            color: "rgba(255,255,255,0.38)",
+          }}
+        >
+          {member.role || "Core Member"}
+        </p>
+      </div>
+    </motion.button>
   );
 }
 
-function BuilderModal({ member, onClose }: { member: TeamMember, onClose: () => void }) {
-  // Mock data parsing for modal depth
-  const bio = "Building the future of web interfaces. Obsessed with high-performance animations, fluid user experiences, and scalable system architecture.";
-  const MOCK_SKILLS = ["React", "Typescript", "Next.js", "Framer Motion", "TailwindCSS", "Node.js"];
-
+function MemberModal({
+  member,
+  onClose,
+}: {
+  member: TeamMember;
+  onClose: () => void;
+}) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -183,80 +242,160 @@ function BuilderModal({ member, onClose }: { member: TeamMember, onClose: () => 
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-[100] flex items-center justify-center p-4"
     >
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-2xl" onClick={onClose} />
-      
-      {/* Modal Container */}
+      <div
+        className="absolute inset-0"
+        style={{ background: "rgba(5,5,5,0.88)", backdropFilter: "blur(16px)" }}
+        onClick={onClose}
+      />
+
       <motion.div
-        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+        initial={{ opacity: 0, scale: 0.96, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 10 }}
-        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="relative w-full max-w-2xl bg-[#0A0A0A] border border-white/10 rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.8)]"
+        exit={{ opacity: 0, scale: 0.96, y: 12 }}
+        transition={{ type: "spring", stiffness: 280, damping: 28 }}
+        className="relative w-full max-w-lg rounded-2xl overflow-hidden"
+        style={{
+          background: "#0A0A0A",
+          border: "1px solid rgba(255,255,255,0.08)",
+          boxShadow: "0 40px 80px rgba(0,0,0,0.6)",
+        }}
       >
-        {/* Glow Effects inside Modal */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[radial-gradient(circle,rgba(0,242,255,0.15)_0%,transparent_70%)] rounded-full blur-2xl pointer-events-none" />
+        {/* Close */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 z-20 p-2 rounded-lg transition-all duration-200"
+          style={{ color: "rgba(255,255,255,0.4)" }}
+          onMouseEnter={(e) => {
+            (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.07)";
+            (e.currentTarget as HTMLElement).style.color = "#ededed";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLElement).style.background = "transparent";
+            (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.4)";
+          }}
+        >
+          <X className="w-5 h-5" />
+        </button>
 
-        {/* Header / Close */}
-        <div className="absolute top-4 right-4 z-20">
-          <button onClick={onClose} className="p-2 rounded-full bg-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-colors">
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        <div className="p-6 md:p-10 flex flex-col md:flex-row gap-8 relative z-10">
-          {/* Avatar Section */}
-          <div className="flex-shrink-0 flex flex-col gap-4 items-center md:items-start">
-            <div className="w-32 h-32 md:w-48 md:h-48 rounded-full border border-white/10 overflow-hidden bg-[#111] relative group">
+        <div className="p-8 flex flex-col sm:flex-row gap-6">
+          {/* Avatar */}
+          <div className="flex-shrink-0">
+            <div
+              className="w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden"
+              style={{ background: "#111111" }}
+            >
               {member.photo ? (
-                <img src={member.photo} alt={member.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <img
+                  src={member.photo}
+                  alt={member.name}
+                  className="w-full h-full object-cover"
+                />
               ) : (
-                <div className="w-full h-full flex items-center justify-center text-4xl font-mono text-white/20">{member.name[0]}</div>
+                <div
+                  className="w-full h-full flex items-center justify-center"
+                  style={{
+                    fontFamily: "'Syne', sans-serif",
+                    fontWeight: 800,
+                    fontSize: "2rem",
+                    color: "rgba(0,242,255,0.3)",
+                  }}
+                >
+                  {member.name[0]}
+                </div>
               )}
-              {/* Overlay glow */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
             </div>
 
-            {/* Social Links */}
-            <div className="flex gap-3 mt-2">
-              <Link href="#" className="p-2.5 rounded-xl bg-white/5 hover:bg-[#00F2FF]/20 hover:text-[#00F2FF] border border-white/5 hover:border-[#00F2FF]/50 text-gray-400 transition-all">
-                <Github className="w-5 h-5" />
-              </Link>
-              <Link href="#" className="p-2.5 rounded-xl bg-white/5 hover:bg-[#00F2FF]/20 hover:text-[#00F2FF] border border-white/5 hover:border-[#00F2FF]/50 text-gray-400 transition-all">
-                <Linkedin className="w-5 h-5" />
-              </Link>
+            {/* Social links */}
+            <div className="flex gap-2 mt-3">
+              <a
+                href="#"
+                className="p-2 rounded-lg transition-all duration-200"
+                style={{
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  color: "rgba(255,255,255,0.4)",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.color = "#ededed";
+                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(0,242,255,0.2)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.4)";
+                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.08)";
+                }}
+              >
+                <Github className="w-4 h-4" />
+              </a>
+              <a
+                href="#"
+                className="p-2 rounded-lg transition-all duration-200"
+                style={{
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  color: "rgba(255,255,255,0.4)",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.color = "#ededed";
+                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(0,242,255,0.2)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.4)";
+                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.08)";
+                }}
+              >
+                <Linkedin className="w-4 h-4" />
+              </a>
             </div>
           </div>
 
-          {/* Details Section */}
-          <div className="flex-1 flex flex-col pt-2">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#00F2FF]/10 border border-[#00F2FF]/20 text-[#00F2FF] text-[10px] uppercase font-mono tracking-widest rounded-full w-fit mb-4">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#00F2FF] animate-pulse" />
-              Active System Builder
+          {/* Details */}
+          <div className="flex-1 min-w-0">
+            <div
+              className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full mb-4 text-xs font-medium"
+              style={{
+                background: "rgba(0,242,255,0.07)",
+                border: "1px solid rgba(0,242,255,0.14)",
+                color: "#00F2FF",
+                fontFamily: "'Inter', sans-serif",
+              }}
+            >
+              Core Member
             </div>
 
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-2" style={{ fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "1px" }}>
+            <h2
+              className="leading-tight mb-1"
+              style={{
+                fontFamily: "'Syne', sans-serif",
+                fontWeight: 800,
+                fontSize: "1.75rem",
+                color: "#ededed",
+                letterSpacing: "-0.02em",
+              }}
+            >
               {member.name}
             </h2>
-            <p className="text-sm font-mono text-[#00F2FF] uppercase tracking-widest mb-6 border-b border-white/5 pb-4">
+            <p
+              className="mb-5"
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: "0.875rem",
+                color: "rgba(255,255,255,0.4)",
+              }}
+            >
               {member.role || "Core Developer"}
             </p>
 
-            <p className="text-gray-400 text-sm leading-relaxed mb-8">
-              {bio}
+            <p
+              style={{
+                fontFamily: "'Inter', sans-serif",
+                fontSize: "0.9375rem",
+                color: "rgba(255,255,255,0.5)",
+                lineHeight: 1.65,
+              }}
+            >
+              A builder and contributor within the Geek Room community at JEMTEC — working
+              on projects, events, and helping grow the tech culture on campus.
             </p>
-
-            <div>
-              <p className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-3">Tech Stack / Skills</p>
-              <div className="flex flex-wrap gap-2">
-                {MOCK_SKILLS.map(skill => (
-                  <span key={skill} className="px-3 py-1.5 rounded-lg bg-black/50 border border-white/10 text-xs font-mono text-gray-300 shadow-inner">
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-
           </div>
         </div>
       </motion.div>

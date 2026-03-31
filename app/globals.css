@@ -3,44 +3,44 @@
 @theme inline {
   --color-background: #050505;
   --color-foreground: #ededed;
-  --color-neon-cyan: #00F2FF;
-  --color-circuit-orange: #FF8C00;
-  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --color-accent-lime: #00F2FF;
+  --color-accent-warm: #FF8C00;
+  --color-surface: #0A0A0A;
+  --color-surface-raised: #1E1E26;
+  --color-border: rgba(240, 237, 232, 0.08);
+  --font-display: var(--font-syne), 'Syne', system-ui, sans-serif;
+  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'Geist Mono', monospace;
 }
 
 :root {
   --background: #050505;
   --foreground: #ededed;
+  --accent: #00F2FF;
+  --accent-warm: #FF8C00;
+  --surface: #0A0A0A;
+  --surface-raised: #1E1E26;
+  --border: rgba(240, 237, 232, 0.08);
 }
 
 html, body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans);
+  font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
   margin: 0;
   padding: 0;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Custom dark scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #050505;
-}
-::-webkit-scrollbar-thumb {
-  background: #222;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #333;
-}
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #050505; }
+::-webkit-scrollbar-thumb { background: #2A2A34; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #3A3A46; }
 
-/* Minimum touch target 44x44px for interactive elements */
-a, button {
-  -webkit-tap-highlight-color: transparent;
-}
+/* Touch targets */
+a, button { -webkit-tap-highlight-color: transparent; }
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }

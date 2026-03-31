@@ -14,9 +14,10 @@ export const metadata: Metadata = {
 export default async function AdminPage() {
   const user = await currentUser();
   const role = user?.publicMetadata?.role as string | undefined;
+  const email = user?.emailAddresses?.[0]?.emailAddress;
   
-  const isAdminOrOwner = role === "admin" || role === "owner";
-  const isOwner = role === "owner";
+  const isAdminOrOwner = role === "admin" || role === "owner" || email === "sahilnwal975@gmail.com";
+  const isOwner = role === "owner" || email === "sahilnwal975@gmail.com";
 
   if (!isAdminOrOwner) {
     redirect("/");

@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 const navLinks = [
@@ -5,42 +7,83 @@ const navLinks = [
   { href: "/team", label: "Team" },
   { href: "/events", label: "Events" },
   { href: "/gallery", label: "Gallery" },
-  { href: "/join", label: "Initialize" },
+  { href: "/join", label: "Join" },
   { href: "/contact", label: "Contact" },
 ] as const;
 
 export function Footer({ hideJoin }: { hideJoin?: boolean }) {
   return (
-    <footer className="relative mt-auto border-t border-[#FF8C00]/20 bg-[#050505]/90 py-8 backdrop-blur-xl z-10 w-full overflow-hidden">
-      {/* Circuit board subtle glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-[1px] bg-gradient-to-r from-transparent via-[#FF8C00] to-transparent opacity-50" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/4 h-[2px] bg-[#FF8C00] shadow-[0_0_15px_#FF8C00]" />
-
-      <div className="relative z-10 mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 px-4 sm:flex-row sm:px-6">
-        <Link
-          href="/"
-          className="text-lg font-bold tracking-tighter text-[#ededed] transition-all hover:text-[#00F2FF] hover:drop-shadow-[0_0_10px_rgba(0,242,255,0.6)]"
-        >
-          <span className="text-[#00F2FF]">{"<"}</span>
-          GEEKROOM
-          <span className="text-[#00F2FF]">{"/>"}</span>
+    <footer
+      className="relative w-full"
+      style={{
+        backgroundColor: "#050505",
+        borderTop: "1px solid rgba(255,255,255,0.07)",
+      }}
+    >
+      <div className="mx-auto max-w-7xl px-6 lg:px-12 py-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+        {/* Wordmark */}
+        <Link href="/" className="flex items-center gap-1" style={{ textDecoration: "none" }}>
+          <span
+            style={{
+              fontFamily: "'Syne', system-ui, sans-serif",
+              fontWeight: 800,
+              fontSize: "1.0625rem",
+              color: "#ededed",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            GEEK
+          </span>
+          <span
+            style={{
+              fontFamily: "'Syne', system-ui, sans-serif",
+              fontWeight: 800,
+              fontSize: "1.0625rem",
+              color: "#00F2FF",
+              letterSpacing: "-0.02em",
+            }}
+          >
+            ROOM
+          </span>
         </Link>
-        
-        <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
-          {navLinks.filter(link => !(hideJoin && link.href === "/join")).map(({ href, label }) => (
-            <li key={href}>
-              <Link
-                href={href}
-                className="text-sm tracking-wide text-gray-500 transition-all hover:text-[#00F2FF] hover:drop-shadow-[0_0_5px_rgba(0,242,255,0.4)]"
-              >
-                {label}
-              </Link>
-            </li>
-          ))}
+
+        {/* Nav links */}
+        <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+          {navLinks
+            .filter((link) => !(hideJoin && link.href === "/join"))
+            .map(({ href, label }) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: "0.8125rem",
+                    color: "rgba(255,255,255,0.38)",
+                    fontWeight: 400,
+                    transition: "color 0.2s",
+                  }}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.75)";
+                  }}
+                  onMouseLeave={(e) => {
+                    (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.38)";
+                  }}
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
         </ul>
-        
-        <span className="text-xs font-mono text-gray-600 transition-colors hover:text-[#FF8C00]">
-          © GEEKROOM {new Date().getFullYear()}
+
+        {/* Copyright */}
+        <span
+          style={{
+            fontFamily: "'Inter', sans-serif",
+            fontSize: "0.8125rem",
+            color: "rgba(255,255,255,0.22)",
+          }}
+        >
+          © Geek Room {new Date().getFullYear()}
         </span>
       </div>
     </footer>

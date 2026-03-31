@@ -1,8 +1,10 @@
-import HeroLogoAnimation from "@/components/HeroLogoAnimation";
-import { SystemInterface } from "@/components/SystemInterface";
+import { HeroSection } from "@/components/HeroSection";
+import { WhySection } from "@/components/WhySection";
 import { TeamPreview } from "@/components/TeamPreview";
 import { EventsPreview } from "@/components/EventsPreview";
 import { GalleryPreview } from "@/components/GalleryPreview";
+import { CultureSection } from "@/components/CultureSection";
+import { JoinCTA } from "@/components/JoinCTA";
 
 import { getMembers } from "@/app/actions/teamActions";
 import { getEvents } from "@/app/actions/eventActions";
@@ -11,22 +13,36 @@ export default async function Home() {
   const members = await getMembers();
   const events = await getEvents();
 
-  // Pick top core members for the team preview
-  const previewMembers = members.filter(member => member.category === "Core");
-  
-  // Pick all past events for the scrolling events preview
-  const previewEvents = events.filter(event => event.status === "past");
+  // Show up to 12 members of any category if "Core" is empty, otherwise prefer Core.
+  const coreMembers = members.filter((m) => m.category === "Core");
+  const previewMembers = coreMembers.length > 0 ? coreMembers : members;
+
+  // Prefer past events for signature, but fallback to any events if empty
+  const pastEvents = events.filter((e) => e.status === "past");
+  const previewEvents = pastEvents.length > 0 ? pastEvents : events;
 
   return (
     <main className="relative bg-[#050505] min-h-screen text-[#ededed]">
-      {/* Hero logo animation */}
-      <HeroLogoAnimation />
-      
-      {/* Redesigned Home/About Flow */}
-      <SystemInterface />
+      {/* 1. Hero */}
+      <HeroSection />
+
+      {/* 2. Why Geek Room */}
+      <WhySection />
+
+      {/* 3. Core Team preview */}
       <TeamPreview members={previewMembers} />
+
+      {/* 4. Signature Events */}
       <EventsPreview events={previewEvents} />
+
+      {/* 5. Gallery */}
       <GalleryPreview events={events} />
+
+      {/* 6. Culture / Values */}
+      <CultureSection />
+
+      {/* 7. Join CTA */}
+      <JoinCTA />
     </main>
   );
 }
