@@ -22,7 +22,7 @@ export default async function Home() {
   const previewEvents = pastEvents.length > 0 ? pastEvents : events;
 
   return (
-    <main className="relative bg-[#050505] min-h-screen text-[#ededed]">
+    <main style={{ backgroundColor: "#050505", minHeight: "100vh", color: "#ededed" }}>
       {/* 1. Hero */}
       <HeroSection />
 
