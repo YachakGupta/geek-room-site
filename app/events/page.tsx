@@ -37,7 +37,7 @@ function TechBackground() {
       <svg className="absolute inset-0 w-full h-full opacity-[0.02]" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="mainGrid" width="50" height="50" patternUnits="userSpaceOnUse">
-            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#4F9EFF" strokeWidth="0.5"/>
+            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#4F9EFF" strokeWidth="0.5" />
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#mainGrid)" />
@@ -54,7 +54,7 @@ function TechBackground() {
 
 export default async function EventsPage() {
   const customEvents = await getEvents();
-  
+
   const mappedEvents: EventDetails[] = customEvents.map((e: EventItem) => ({
     slug: e.id,
     title: e.title,
@@ -90,7 +90,7 @@ export default async function EventsPage() {
 
         {/* Main Title */}
         <div className="relative inline-block mb-2">
-          <h1 
+          <h1
             className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight font-['var(--font-geist-sans)']"
           >
             <span className="text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
