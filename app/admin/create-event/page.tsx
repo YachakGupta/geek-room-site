@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { addEvent } from "@/app/actions/eventActions";
+import { addEvent, EventItem } from "@/app/actions/eventActions";
 import { useRouter } from "next/navigation";
 import { Plus, Trash2, ArrowLeft } from "lucide-react";
 import Link from "next/link";

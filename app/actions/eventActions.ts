@@ -45,7 +45,6 @@ export async function addEvent(eventData: EventItem) {
         time: eventData.time,
         registrationOpen: eventData.registrationOpen ?? true,
         gallery: eventData.gallery || [],
-        formSchema: eventData.formSchema || undefined,
         winners: {
           create: eventData.winners?.map(w => ({
             rank: w.rank,
@@ -89,7 +88,6 @@ export async function updateEvent(id: string, eventData: Partial<EventItem>) {
         time: eventData.time,
         registrationOpen: eventData.registrationOpen,
         gallery: eventData.gallery,
-        formSchema: eventData.formSchema || undefined,
         winners: eventData.winners ? {
           create: eventData.winners.map(w => ({
             rank: w.rank,
@@ -232,7 +230,7 @@ export async function submitFormResponse(eventId: string, formData: Record<strin
     await prisma.formSubmission.create({
       data: {
         eventId,
-        data: formData,
+        data: formData as any,
       },
     });
     return { success: true };
@@ -275,7 +273,7 @@ export async function exportSubmissionsCSV(eventId: string): Promise<string> {
       where: { id: eventId },
       select: {
         id: true,
-        formSchema: true,
+        FormField: true,
         submissions: {
           orderBy: { submitted: "desc" },
           select: {
@@ -289,12 +287,12 @@ export async function exportSubmissionsCSV(eventId: string): Promise<string> {
 
     if (!event || !event.submissions || event.submissions.length === 0) return "";
 
-    // Check if formSchema exists, if not use default fields
+    // Check if FormField exists, if not use default fields
     interface FormField {
       id: string;
       label: string;
     }
-    const schema = event.formSchema ? (event.formSchema as unknown as FormField[]) : null;
+    const schema = (event.FormField && event.FormField.length > 0) ? (event.FormField as unknown as FormField[]) : null;
     const fieldLabels = schema
       ? schema.map((f: FormField) => f.label)
       : ["Name", "Email", "Phone", "College"];

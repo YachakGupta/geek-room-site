@@ -19,7 +19,7 @@ export default async function RegisterEventPage({ params }: { params: Promise<{ 
     where: { id: eventId },
     select: {
       id: true,
-      formSchema: true,
+      FormField: true,
       title: true,
       registrationOpen: true,
     }
@@ -27,7 +27,7 @@ export default async function RegisterEventPage({ params }: { params: Promise<{ 
 
   if (!event) notFound();
 
-  const formSchema = event.formSchema as unknown as FormField[] | null;
+  const formSchema = (event.FormField && event.FormField.length > 0) ? (event.FormField as unknown as FormField[]) : null;
 
   return (
     <RegisterForm

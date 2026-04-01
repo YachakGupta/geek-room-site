@@ -37,7 +37,7 @@ export default async function EventPage({ params }: Props) {
     registrationLink: rawEvent.registrationLink,
     location: rawEvent.location,
     time: rawEvent.time,
-    category: rawEvent.category as string || "tech-event",
+    category: (rawEvent.category as "hackathon" | "workshop" | "talk" | "other" | "tech-event") || "tech-event",
     winners: rawEvent.winners
   };
 

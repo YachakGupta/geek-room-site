@@ -17,7 +17,7 @@ export default async function EventResponsesPage({ params }: { params: Promise<{
     where: { id: eventId },
     select: {
       id: true,
-      formSchema: true,
+      FormField: true,
       title: true,
     }
   });
@@ -25,7 +25,7 @@ export default async function EventResponsesPage({ params }: { params: Promise<{
   if (!event) notFound();
   
   const submissions = await getFormSubmissions(eventId);
-  const formSchema = event.formSchema as unknown as FormField[] | null;
+  const formSchema = (event.FormField && event.FormField.length > 0) ? (event.FormField as unknown as FormField[]) : null;
 
   const fieldLabels = formSchema
     ? formSchema.map((f: FormField) => f.label)

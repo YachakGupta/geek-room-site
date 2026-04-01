@@ -65,7 +65,7 @@ export default async function EventsPage() {
     registrationLink: e.registrationLink,
     location: e.location,
     time: e.time,
-    category: e.category || "tech-event",
+    category: (e.category as "hackathon" | "workshop" | "talk" | "other" | "tech-event") || "tech-event",
     registrationOpen: e.registrationOpen,
     gallery: e.gallery,
     winners: e.winners
