@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Image as ImageIcon, Film, X, ChevronLeft, ChevronRight, Search, Download, Calendar, MapPin, FolderOpen, Share2, Layers, Check } from "lucide-react";
 import Image from "next/image";
 import { EventDetails } from "../events/data";
-import ParticleBackground from "./ParticleBackground";
+import LunarRunwayBackground from "@/components/LunarRunwayBackground";
 import CustomCursor from "./CustomCursor";
 import FlipCounter from "./FlipCounter";
 
@@ -180,16 +180,14 @@ export default function GalleryClient({ events }: GalleryClientProps) {
   };
 
   return (
-    <main className="min-h-screen bg-[#050505] text-[#ededed] relative overflow-hidden cursor-none">
-      {/* === ADDON: Interactive Particle Mesh Background === */}
-      <ParticleBackground />
+    <main className="min-h-screen bg-[#1F1F2B] text-[#ededed] relative overflow-hidden cursor-none">
+      {/* === Lunar Runway Background === */}
+      <LunarRunwayBackground />
 
       {/* === ADDON: Magnetic Custom Cursor === */}
       <CustomCursor />
 
-      {/* Background Overlay Nodes */}
-      <div className="fixed top-0 left-0 w-full h-[600px] bg-[radial-gradient(ellipse_at_top,rgba(0,242,255,0.08)_0%,transparent_50%)] pointer-events-none z-0" />
-      <div className="fixed bottom-0 right-0 w-[800px] h-[800px] bg-[radial-gradient(circle_at_bottom_right,rgba(255,140,0,0.05)_0%,transparent_50%)] pointer-events-none z-0" />
+
 
       {/* Toast Notification */}
       <AnimatePresence>

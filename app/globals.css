@@ -23,7 +23,8 @@
   --border: rgba(240, 237, 232, 0.08);
 }
 
-html, body {
+html,
+body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-inter), 'Inter', system-ui, sans-serif;
@@ -34,23 +35,46 @@ html, body {
 }
 
 /* Scrollbar */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: #050505; }
-::-webkit-scrollbar-thumb { background: #2A2A34; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #3A3A46; }
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2A2A34;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3A3A46;
+}
 
 /* Touch targets */
-a, button { -webkit-tap-highlight-color: transparent; }
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
 
 /* Smooth scroll */
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 /* ========== Gallery Addon Styles ========== */
 
 /* Holographic sweep border */
 @keyframes holo-sweep {
-  0% { --angle: 0deg; }
-  100% { --angle: 360deg; }
+  0% {
+    --angle: 0deg;
+  }
+
+  100% {
+    --angle: 360deg;
+  }
 }
 
 @property --angle {
@@ -62,22 +86,21 @@ html { scroll-behavior: smooth; }
 .holo-border {
   position: relative;
 }
+
 .holo-border::before {
   content: "";
   position: absolute;
   inset: -1px;
   border-radius: inherit;
   padding: 1px;
-  background: conic-gradient(
-    from var(--angle),
-    transparent 0%,
-    #00F2FF 8%,
-    transparent 16%,
-    #FF8C00 24%,
-    transparent 32%,
-    #00F2FF 40%,
-    transparent 48%
-  );
+  background: conic-gradient(from var(--angle),
+      transparent 0%,
+      #00F2FF 8%,
+      transparent 16%,
+      #FF8C00 24%,
+      transparent 32%,
+      #00F2FF 40%,
+      transparent 48%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -86,6 +109,7 @@ html { scroll-behavior: smooth; }
   pointer-events: none;
   z-index: 1;
 }
+
 .holo-border:hover::before {
   opacity: 1;
   animation: holo-sweep 3s linear infinite;
@@ -93,45 +117,80 @@ html { scroll-behavior: smooth; }
 
 /* Glitch effect on image hover */
 @keyframes glitch-shift {
-  0%, 100% { transform: translate(0); filter: none; clip-path: inset(0 0 0 0); }
-  10% { transform: translate(-3px, 1px); filter: hue-rotate(90deg) saturate(1.5); clip-path: inset(20% 0 40% 0); }
-  20% { transform: translate(2px, -1px); clip-path: inset(60% 0 10% 0); }
-  30% { transform: translate(-1px, 2px); filter: hue-rotate(-60deg); clip-path: inset(10% 0 70% 0); }
-  40% { transform: translate(1px, -2px); clip-path: inset(40% 0 30% 0); }
-  50% { transform: translate(0); filter: none; clip-path: inset(0 0 0 0); }
+
+  0%,
+  100% {
+    transform: translate(0);
+    filter: none;
+    clip-path: inset(0 0 0 0);
+  }
+
+  10% {
+    transform: translate(-3px, 1px);
+    filter: hue-rotate(90deg) saturate(1.5);
+    clip-path: inset(20% 0 40% 0);
+  }
+
+  20% {
+    transform: translate(2px, -1px);
+    clip-path: inset(60% 0 10% 0);
+  }
+
+  30% {
+    transform: translate(-1px, 2px);
+    filter: hue-rotate(-60deg);
+    clip-path: inset(10% 0 70% 0);
+  }
+
+  40% {
+    transform: translate(1px, -2px);
+    clip-path: inset(40% 0 30% 0);
+  }
+
+  50% {
+    transform: translate(0);
+    filter: none;
+    clip-path: inset(0 0 0 0);
+  }
 }
 
 .glitch-on-hover {
   position: relative;
 }
+
 .glitch-on-hover:hover img,
 .glitch-on-hover:hover video {
   animation: glitch-shift 0.5s ease-in-out 1;
 }
+
 .glitch-on-hover::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0, 0, 0, 0.15) 2px,
-    rgba(0, 0, 0, 0.15) 4px
-  );
+  background: repeating-linear-gradient(0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.15) 2px,
+      rgba(0, 0, 0, 0.15) 4px);
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.2s;
   z-index: 5;
 }
+
 .glitch-on-hover:hover::after {
   opacity: 1;
 }
 
 /* Stacked deck fan */
 @keyframes fan-out {
-  0% { transform: rotate(0deg) translateZ(0); }
-  100% { transform: rotate(var(--fan-angle)) translateZ(var(--fan-z)); }
+  0% {
+    transform: rotate(0deg) translateZ(0);
+  }
+
+  100% {
+    transform: rotate(var(--fan-angle)) translateZ(var(--fan-z));
+  }
 }
 
 .deck-card {
@@ -143,10 +202,12 @@ html { scroll-behavior: smooth; }
   .holo-border::before {
     animation: none !important;
   }
+
   .glitch-on-hover:hover img,
   .glitch-on-hover:hover video {
     animation: none !important;
   }
+
   .deck-card {
     transition: none !important;
   }
