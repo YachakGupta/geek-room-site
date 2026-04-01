@@ -84,13 +84,13 @@ export function Header({ hideJoin }: { hideJoin?: boolean }) {
           width: 18px;
           height: 2px;
           border-radius: 9999px;
-          background: #00F2FF;
+          background: #4F9EFF;
         }
 
         /* scrolled capsule glow pulse */
         @keyframes capsuleGlow {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(0,242,255,0.08), 0 8px 32px rgba(0,0,0,0.55); }
-          50%       { box-shadow: 0 0 0 2px rgba(0,242,255,0.12), 0 8px 32px rgba(0,0,0,0.55); }
+          0%, 100% { box-shadow: 0 0 0 0 rgba(79,158,255,0.08), 0 8px 32px rgba(0,0,0,0.55); }
+          50%       { box-shadow: 0 0 0 2px rgba(79,158,255,0.12), 0 8px 32px rgba(0,0,0,0.55); }
         }
         .scrolled-capsule {
           animation: capsuleGlow 3s ease-in-out infinite;
@@ -129,8 +129,18 @@ export function Header({ hideJoin }: { hideJoin?: boolean }) {
           {/* LEFT — wordmark (no capsule) */}
           <Link
             href="/"
-            style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "1px" }}
+            style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "8px" }}
           >
+            <img
+              src="/logo.jpg"
+              alt="Geek Room"
+              style={{
+                height: "32px",
+                width: "32px",
+                borderRadius: "6px",
+                objectFit: "cover",
+              }}
+            />
             <span style={{
               fontFamily: "'Syne', system-ui, sans-serif",
               fontWeight: 800,
@@ -144,7 +154,7 @@ export function Header({ hideJoin }: { hideJoin?: boolean }) {
               fontFamily: "'Syne', system-ui, sans-serif",
               fontWeight: 800,
               fontSize: "1.35rem",
-              color: "#00F2FF",
+              color: "#4F9EFF",
               letterSpacing: "-0.02em",
             }}>
               ROOM
@@ -208,9 +218,9 @@ export function Header({ hideJoin }: { hideJoin?: boolean }) {
                   textDecoration: "none",
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(0,242,255,0.35)";
+                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(79,158,255,0.35)";
                   (e.currentTarget as HTMLElement).style.color = "#ededed";
-                  (e.currentTarget as HTMLElement).style.background = "rgba(0,242,255,0.06)";
+                  (e.currentTarget as HTMLElement).style.background = "rgba(79,158,255,0.06)";
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.12)";
@@ -272,8 +282,18 @@ export function Header({ hideJoin }: { hideJoin?: boolean }) {
             {/* Wordmark inside capsule */}
             <Link
               href="/"
-              style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "1px", padding: "5px 12px" }}
+              style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "6px", padding: "5px 12px" }}
             >
+              <img
+                src="/logo.jpg"
+                alt="Geek Room"
+                style={{
+                  height: "24px",
+                  width: "24px",
+                  borderRadius: "4px",
+                  objectFit: "cover",
+                }}
+              />
               <span style={{
                 fontFamily: "'Syne', system-ui, sans-serif",
                 fontWeight: 800,
@@ -287,7 +307,7 @@ export function Header({ hideJoin }: { hideJoin?: boolean }) {
                 fontFamily: "'Syne', system-ui, sans-serif",
                 fontWeight: 800,
                 fontSize: "1.15rem",
-                color: "#00F2FF",
+                color: "#4F9EFF",
                 letterSpacing: "-0.02em",
               }}>
                 ROOM
@@ -344,17 +364,17 @@ export function Header({ hideJoin }: { hideJoin?: boolean }) {
                   fontFamily: "'Inter', sans-serif",
                   fontWeight: 500,
                   color: "rgba(255,255,255,0.65)",
-                  background: "rgba(0,242,255,0.07)",
-                  border: "1px solid rgba(0,242,255,0.2)",
+                  background: "rgba(79,158,255,0.07)",
+                  border: "1px solid rgba(79,158,255,0.2)",
                   textDecoration: "none",
                   margin: "0 2px",
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.background = "rgba(0,242,255,0.12)";
+                  (e.currentTarget as HTMLElement).style.background = "rgba(79,158,255,0.12)";
                   (e.currentTarget as HTMLElement).style.color = "#ededed";
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.background = "rgba(0,242,255,0.07)";
+                  (e.currentTarget as HTMLElement).style.background = "rgba(79,158,255,0.07)";
                   (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.65)";
                 }}
               >
@@ -410,7 +430,7 @@ export function Header({ hideJoin }: { hideJoin?: boolean }) {
                       fontFamily: "'Inter', sans-serif",
                       color: isActive ? "#ededed" : "rgba(255,255,255,0.45)",
                       backgroundColor: isActive ? "rgba(255,255,255,0.05)" : "transparent",
-                      borderLeft: isActive ? "2px solid #00F2FF" : "2px solid transparent",
+                      borderLeft: isActive ? "2px solid #4F9EFF" : "2px solid transparent",
                     }}
                   >
                     {label}

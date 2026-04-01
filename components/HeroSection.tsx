@@ -9,7 +9,7 @@ import { AsciiVisual } from "@/components/AsciiVisual";
 const METRICS = [
   { icon: Calendar, value: "6+", label: "Signature Events" },
   { icon: Users, value: "100+", label: "Active Members" },
-  { icon: MapPin, value: "JEMTEC", label: "Campus, Delhi" },
+  { icon: MapPin, value: "JEMTEC", label: "Campus, Greater Noida" },
 ];
 
 export function HeroSection() {

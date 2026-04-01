@@ -22,7 +22,17 @@ export function Footer({ hideJoin }: { hideJoin?: boolean }) {
     >
       <div className="mx-auto max-w-7xl px-6 lg:px-12 py-8 flex flex-col sm:flex-row items-center justify-between gap-6">
         {/* Wordmark */}
-        <Link href="/" className="flex items-center gap-1" style={{ textDecoration: "none" }}>
+        <Link href="/" className="flex items-center gap-2" style={{ textDecoration: "none" }}>
+          <img
+            src="/logo.jpg"
+            alt="Geek Room"
+            style={{
+              height: "28px",
+              width: "28px",
+              borderRadius: "5px",
+              objectFit: "cover",
+            }}
+          />
           <span
             style={{
               fontFamily: "'Syne', system-ui, sans-serif",
@@ -39,7 +49,7 @@ export function Footer({ hideJoin }: { hideJoin?: boolean }) {
               fontFamily: "'Syne', system-ui, sans-serif",
               fontWeight: 800,
               fontSize: "1.0625rem",
-              color: "#00F2FF",
+              color: "#4F9EFF",
               letterSpacing: "-0.02em",
             }}
           >
