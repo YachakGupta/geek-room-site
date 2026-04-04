@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { ArrowRight, Users, Calendar, MapPin } from "lucide-react";
 import { AsciiVisual } from "@/components/AsciiVisual";
+import { SupportRobotCanvas } from "@/components/SupportRobotCanvas";
 
 export function HeroSection({ eventsCount, membersCount }: { eventsCount?: number; membersCount?: number }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -52,6 +53,49 @@ export function HeroSection({ eventsCount, membersCount }: { eventsCount?: numbe
             filter: "blur(40px)",
           }}
         />
+      </motion.div>
+
+      {/* Floating Robot Ticket CTA */}
+      <motion.div
+        className="fixed right-6 bottom-6 md:right-10 md:bottom-10 z-[100] flex flex-col items-center cursor-pointer hidden sm:flex"
+        animate={{ y: [0, -15, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        style={{ perspective: 1200 }}
+      >
+        <Link href="/support" className="flex flex-col items-center group">
+          {/* Speech Bubble */}
+          <motion.div 
+            className="relative mb-4 px-4 py-2 bg-[#4F9EFF]/10 border border-[#4F9EFF]/50 backdrop-blur-xl rounded-2xl opacity-80 group-hover:opacity-100 group-hover:-translate-y-2 transition-all duration-500 shadow-[0_4px_25px_rgba(79,158,255,0.25)]"
+            animate={{ rotateZ: [-2, 2, -2] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <span className="text-[11px] font-bold text-[#4F9EFF] tracking-widest font-mono uppercase drop-shadow-[0_0_8px_rgba(79,158,255,0.8)]">
+              Raise a Ticket
+            </span>
+            {/* Outer Glow */}
+            <div className="absolute inset-0 rounded-2xl bg-[#4F9EFF] opacity-0 group-hover:opacity-20 blur-md transition-opacity duration-500"></div>
+            {/* Triangle tail */}
+            <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[8px] border-l-transparent border-t-[10px] border-t-[#4F9EFF]/40 border-r-[8px] border-r-transparent"></div>
+          </motion.div>
+          
+          {/* Robot WebGL Canvas */}
+          <motion.div 
+            className="w-24 h-32 sm:w-28 sm:h-36 md:w-32 md:h-40 relative transition-all duration-500"
+            animate={{ 
+              rotateY: [-15, 15, -15],
+              rotateX: [8, -8, 8],
+              rotateZ: [-3, 3, -3]
+            }}
+            transition={{
+              duration: 7,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            style={{ transformStyle: "preserve-3d" }}
+          >
+            <SupportRobotCanvas className="w-full h-full object-contain filter drop-shadow-[0_0_20px_rgba(79,158,255,0.4)] transition-all duration-500 group-hover:scale-110 group-hover:drop-shadow-[0_0_40px_rgba(184,41,247,0.7)]" />
+          </motion.div>
+        </Link>
       </motion.div>
 
       {/* Content */}

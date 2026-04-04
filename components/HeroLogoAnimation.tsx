@@ -1,31 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-// Wrapper to handle mounting/unmounting and scroll locking
-export default function StartupAnimation() {
-  const [show, setShow] = useState(true);
-
-  useEffect(() => {
-    // Only show once per session to not annoy returning users, or comment out for development
-    if (sessionStorage.getItem("homeAnimationPlayed")) {
-      setTimeout(() => setShow(false), 0);
-      return;
-    }
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, []);
-
-  const handleComplete = () => {
-    document.body.style.overflow = "";
-    sessionStorage.setItem("homeAnimationPlayed", "true");
-    setShow(false);
-  };
-
-  if (!show) return null;
-
-  return <StartupAnimationContent onComplete={handleComplete} />;
+interface HeroLogoAnimationProps {
+  onComplete?: () => void;
 }
 
 // Deterministic pseudo-random values to avoid hydration mismatch
@@ -48,7 +25,7 @@ const SPARK_OFFSETS = [
 
 const CODE_SYMBOLS = ["</>", "{}", "//", "=>", "( )", "[]", "&&", "!=", "++", "::"];
 
-function StartupAnimationContent({ onComplete }: { onComplete: () => void }) {
+export default function HeroLogoAnimation({ onComplete }: HeroLogoAnimationProps) {
   const [phase, setPhase] = useState<
     "init" | "brackets" | "slash" | "flash" | "text" | "settle" | "hero"
   >("init");
@@ -66,7 +43,7 @@ function StartupAnimationContent({ onComplete }: { onComplete: () => void }) {
     t(() => setPhase("settle"), 3000);
     t(() => {
       setPhase("hero");
-      onComplete();
+      onComplete?.();
     }, 4200);
 
     return () => timers.forEach(clearTimeout);
@@ -91,10 +68,11 @@ function StartupAnimationContent({ onComplete }: { onComplete: () => void }) {
           transition: opacity 0.8s cubic-bezier(0.4,0,0.2,1), transform 0.8s cubic-bezier(0.4,0,0.2,1), background 1s ease;
         }
         .logo-anim-root[data-phase="hero"] {
-          position: absolute;
-          bottom: auto;
+          position: relative;
+          width: 100%;
           height: 100vh;
-          background: transparent;
+          z-index: 1;
+          background: #050505;
           pointer-events: none;
         }
 
@@ -117,7 +95,7 @@ function StartupAnimationContent({ onComplete }: { onComplete: () => void }) {
         }
         .logo-anim-root:not([data-phase="init"]) .la-bg-orb { opacity: 1; }
         .la-bg-orb--1 { width: 600px; height: 600px; top: -200px; left: -150px; background: radial-gradient(circle, rgba(0,242,255,0.25), transparent 70%); animation: la-orbit 12s ease-in-out infinite; }
-        .la-bg-orb--2 { width: 500px; height: 500px; bottom: -200px; right: -100px; background: radial-gradient(circle, rgba(236,72,153,0.2), transparent 70%); animation: la-orbit 15s ease-in-out infinite reverse; }
+        .la-bg-orb--2 { width: 500px; height: 500px; bottom: -200px; right: -100px; background: radial-gradient(circle, rgba(255,140,0,0.2), transparent 70%); animation: la-orbit 15s ease-in-out infinite reverse; }
         .la-bg-orb--3 { width: 350px; height: 350px; top: 30%; left: 60%; background: radial-gradient(circle, rgba(0,242,255,0.12), transparent 70%); animation: la-orbit 10s ease-in-out infinite 2s; }
 
         @keyframes la-orbit {
@@ -258,7 +236,7 @@ function StartupAnimationContent({ onComplete }: { onComplete: () => void }) {
           transition-duration: 0.35s;
         }
 
-        /* Rest as underline below text - absolute positioning to sit directly under GEEKROOM */
+        /* Rest as underline below text */
         .logo-anim-root[data-phase="text"] .la-sword-wrapper,
         .logo-anim-root[data-phase="settle"] .la-sword-wrapper,
         .logo-anim-root[data-phase="hero"] .la-sword-wrapper {
@@ -272,11 +250,10 @@ function StartupAnimationContent({ onComplete }: { onComplete: () => void }) {
         .logo-anim-root[data-phase="settle"] .la-sword,
         .logo-anim-root[data-phase="hero"] .la-sword {
           opacity: 0.9;
-          color: #4F9EFF;
-          /* Rotate to horizontal (90deg), stretch wide, flatten thin */
+          color: #00F2FF;
           transform: rotate(0deg) scaleX(8) scaleY(0.15);
-          text-shadow: 0 0 30px rgba(79,158,255,0.8), 0 0 60px rgba(79,158,255,0.4);
-          filter: drop-shadow(0 0 15px rgba(79,158,255,0.6));
+          text-shadow: 0 0 30px rgba(0,242,255,0.8), 0 0 60px rgba(0,242,255,0.4);
+          filter: drop-shadow(0 0 15px rgba(0,242,255,0.6));
           transition-duration: 0.9s;
         }
 
@@ -387,8 +364,8 @@ function StartupAnimationContent({ onComplete }: { onComplete: () => void }) {
         }
 
         .la-title {
-          font-size: clamp(3rem, 10vw, 6rem);
-          font-weight: 800;
+          font-size: clamp(2rem, 6vw, 4.5rem);
+          font-weight: 700;
           color: #fff;
           letter-spacing: 0.15em;
           text-shadow: 0 0 40px rgba(0,242,255,0.3);
@@ -482,10 +459,10 @@ function StartupAnimationContent({ onComplete }: { onComplete: () => void }) {
           key={i}
           className="la-code-particle"
           style={{
-            left: (8 + i * 9) + "%",
-            top: (60 + (i % 3) * 20) + "%",
-            animationDelay: (i * 0.7).toFixed(1) + "s",
-            fontSize: (0.7 + (i % 5) * 0.12).toFixed(2) + "rem",
+            left: `${8 + i * 9}%`,
+            top: `${60 + (i % 3) * 20}%`,
+            animationDelay: `${(i * 0.7).toFixed(1)}s`,
+            fontSize: `${(0.7 + (i % 5) * 0.12).toFixed(2)}rem`,
           }}
         >
           {code}
@@ -521,11 +498,11 @@ function StartupAnimationContent({ onComplete }: { onComplete: () => void }) {
             <div
               key={i}
               className="la-trail"
-              style={({
-                "--tx": p.tx + "px",
-                "--ty": p.ty + "px",
-                animationDelay: (i * 0.012).toFixed(3) + "s",
-              } as React.CSSProperties)}
+              style={{
+                "--tx": `${p.tx}px`,
+                "--ty": `${p.ty}px`,
+                animationDelay: `${(i * 0.012).toFixed(3)}s`,
+              } as React.CSSProperties}
             />
           ))}
         </div>
@@ -537,7 +514,7 @@ function StartupAnimationContent({ onComplete }: { onComplete: () => void }) {
               <span
                 key={i}
                 style={{
-                  animationDelay: (i * 0.05).toFixed(2) + "s",
+                  animationDelay: `${(i * 0.05).toFixed(2)}s`,
                   ...(char === " " ? { width: "0.4em" } : {}),
                 }}
               >
@@ -551,13 +528,13 @@ function StartupAnimationContent({ onComplete }: { onComplete: () => void }) {
             <div
               key={i}
               className="la-spark"
-              style={({
-                left: (20 + i * 8) + "%",
+              style={{
+                left: `${20 + i * 8}%`,
                 bottom: "-8px",
-                "--sx": s.sx + "px",
-                "--sy": s.sy + "px",
-                animationDelay: (i * 0.1).toFixed(1) + "s",
-              } as React.CSSProperties)}
+                "--sx": `${s.sx}px`,
+                "--sy": `${s.sy}px`,
+                animationDelay: `${(i * 0.1).toFixed(1)}s`,
+              } as React.CSSProperties}
             />
           ))}
         </div>

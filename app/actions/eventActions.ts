@@ -210,7 +210,7 @@ export async function getEvents(): Promise<EventItem[]> {
     past.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     return [...upcoming, ...past] as EventItem[];
-  } catch (error: unknown) {
+  } catch (error: any) {
     console.error("Failed to fetch events", error);
     return [];
   }

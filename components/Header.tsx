@@ -14,6 +14,7 @@ const navLinks = [
   { href: "/gallery", label: "Gallery" },
   { href: "/join", label: "Join" },
   { href: "/contact", label: "Contact" },
+  { href: "/support", label: "Support" },
 ] as const;
 
 export function Header({ hideJoin }: { hideJoin?: boolean }) {

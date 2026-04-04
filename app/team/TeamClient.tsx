@@ -1,6 +1,5 @@
 "use client";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import LogoAnimation from "./LogoAnimation";
 import Robot3DBackground from "./Robot3DBackground";
 
 type TeamMember = {
@@ -34,64 +33,6 @@ export default function TeamClient({ members, loggedInEmail }: TeamClientProps) 
   }, [members]);
   const [heroQuoteIndex, setHeroQuoteIndex] = useState(0);
   const [isQuoteFading, setIsQuoteFading] = useState(false);
-  const tourActiveRef = React.useRef(false);
-
-  useEffect(() => {
-    const cancelTour = () => { tourActiveRef.current = false; };
-    window.addEventListener("wheel", cancelTour, { passive: true });
-    window.addEventListener("touchstart", cancelTour, { passive: true });
-    return () => {
-      window.removeEventListener("wheel", cancelTour);
-      window.removeEventListener("touchstart", cancelTour);
-    };
-  }, []);
-
-  const handleAnimationComplete = useCallback(() => {
-    document.body.style.overflow = "";
-    tourActiveRef.current = true;
-    
-    const startTour = async () => {
-      await new Promise(resolve => setTimeout(resolve, 1200));
-      const sections = document.querySelectorAll(".team-section");
-      
-      for (let i = 0; i < sections.length; i++) {
-        if (!tourActiveRef.current) return;
-        
-        // Scroll to section
-        sections[i].scrollIntoView({ behavior: "smooth", block: "start" });
-        
-        // Wait for scroll to settle
-        await new Promise(resolve => setTimeout(resolve, 800));
-        if (!tourActiveRef.current) return;
-        
-        // Reveal the section header first
-        const header = sections[i].querySelector(".section-header");
-        if (header) header.classList.add("active");
-        await new Promise(resolve => setTimeout(resolve, 400));
-        if (!tourActiveRef.current) return;
-        
-        // Get all cards in this section and pop them in one-by-one (wave)
-        const cards = sections[i].querySelectorAll(".team-member");
-        const CARD_STAGGER_MS = 120; // delay between each card popping
-        
-        for (let c = 0; c < cards.length; c++) {
-          if (!tourActiveRef.current) return;
-          cards[c].classList.add("wave-pop-in");
-          await new Promise(resolve => setTimeout(resolve, CARD_STAGGER_MS));
-        }
-        
-        // Wait for last card's animation to finish + a small pause
-        await new Promise(resolve => setTimeout(resolve, 700));
-      }
-      
-      if (!tourActiveRef.current) return;
-      await new Promise(resolve => setTimeout(resolve, 800));
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      tourActiveRef.current = false;
-    };
-    
-    startTour();
-  }, []);
 
   const heroQuotes = [
     "\"Talk is cheap. Show me the code.\" - Linus Torvalds",
@@ -102,7 +43,6 @@ export default function TeamClient({ members, loggedInEmail }: TeamClientProps) 
   ];
 
   useEffect(() => {
-    document.body.style.overflow = "hidden";
 
     // Hero Quote Cycler
     const heroInterval = setInterval(() => {
@@ -173,7 +113,6 @@ export default function TeamClient({ members, loggedInEmail }: TeamClientProps) 
     document.addEventListener("mousemove", onParallaxMove);
 
     return () => {
-      document.body.style.overflow = "";
       document.removeEventListener("mousemove", onParallaxMove);
       window.removeEventListener("scroll", revealOnScroll);
       cardObserver.disconnect();
@@ -270,8 +209,6 @@ export default function TeamClient({ members, loggedInEmail }: TeamClientProps) 
       `}} />
 
       <Robot3DBackground />
-      <LogoAnimation onComplete={handleAnimationComplete} />
-
 
       <section className="team-hero">
         <div className="hero-bg">
@@ -280,6 +217,19 @@ export default function TeamClient({ members, loggedInEmail }: TeamClientProps) 
           <div className="hero-gradient-3"></div>
         </div>
         <div className="hero-content">
+          <div className="relative inline-block mb-8 text-center w-full">
+            <h1
+              className="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight"
+              style={{ fontFamily: "'Syne', system-ui, sans-serif" }}
+            >
+              <span className="text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">
+                <span className="text-[#00F2FF] opacity-80 mr-3">{'<'}</span>
+                THE OG TEAM
+                <span className="text-[#8C52FF] opacity-80 ml-3">{'/>'}</span>
+              </span>
+            </h1>
+            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-64 h-px bg-gradient-to-r from-transparent via-[#00F2FF] to-transparent" />
+          </div>
           <div className={`hero-dynamic-quote ${isQuoteFading ? 'fading' : ''}`}>
             {heroQuotes[heroQuoteIndex]}
           </div>
@@ -302,7 +252,7 @@ export default function TeamClient({ members, loggedInEmail }: TeamClientProps) 
               <span className="section-badge">{dept.title}</span>
               <h2 className="section-title">{dept.title} TEAM</h2>
             </div>
-  
+
             <div className="team-grid">
               {dept.members.map((member, idx) => (
                 <div className="team-member" key={member.id}>

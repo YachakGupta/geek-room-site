@@ -10,6 +10,7 @@ import { JoinCTA } from "@/components/JoinCTA";
 import { getMembers } from "@/app/actions/teamActions";
 import { getEvents } from "@/app/actions/eventActions";
 import StartupAnimation from "@/components/StartupAnimation";
+import HeroLogoAnimation from "@/components/HeroLogoAnimation";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
@@ -29,6 +30,8 @@ export default async function Home() {
       {/* 0. Startup Screen */}
       <StartupAnimation />
 
+      {/* 0.1 Logo Animation */}
+      <HeroLogoAnimation />
       {/* 1. Hero */}
       <HeroSection eventsCount={events.length} membersCount={members.length} />
 

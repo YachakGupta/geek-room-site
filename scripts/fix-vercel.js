@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 const { spawnSync, execSync } = require('child_process');
 
 const SUPABASE_URL = "https://tcoqhpyxmulrmshqjhte.supabase.co";

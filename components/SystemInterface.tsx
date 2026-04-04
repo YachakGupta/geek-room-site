@@ -4,16 +4,16 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Terminal, Zap, Network, Globe } from "lucide-react";
 
+const phrases = [
+  "> Building projects...",
+  "> Running hackathons...",
+  "> Shipping ideas...",
+];
+
 export function SystemInterface() {
   const [text, setText] = useState("> ");
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-
-  const phrases = [
-    "> Building projects...",
-    "> Running hackathons...",
-    "> Shipping ideas...",
-  ];
 
   useEffect(() => {
     const currentPhrase = phrases[phraseIndex];
