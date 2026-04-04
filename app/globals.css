@@ -239,3 +239,14 @@ html {
 .animate-marquee-right {
   animation: marquee-right 35s linear infinite;
 }
+
+/* ========== Clerk Overrides ========== */
+.cl-userButtonPopoverCard,
+.cl-userButtonPopoverCard *,
+.cl-userButtonPopoverActionButtonText,
+.cl-userButtonPopoverActionButtonIcon,
+.cl-userPreviewMainIdentifier,
+.cl-userPreviewSecondaryIdentifier,
+.cl-internal-21ve {
+  color: #ededed !important;
+}

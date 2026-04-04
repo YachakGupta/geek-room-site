@@ -15,6 +15,8 @@ export type TeamMember = {
   photo: string;
   gmail: string;
   linkedin: string;
+  instagram?: string;
+  about?: string;
 };
 
 export async function getMembers(): Promise<TeamMember[]> {

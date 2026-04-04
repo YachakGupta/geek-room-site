@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useUser, UserButton } from "@clerk/nextjs";
-import { X, Menu } from "lucide-react";
+import { X, Menu, User } from "lucide-react";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -177,7 +177,11 @@ export function Header({ hideJoin }: { hideJoin?: boolean }) {
               }}>
                 <UserButton
                   appearance={{ elements: { userButtonAvatarBox: "w-8 h-8 border border-white/10" } }}
-                />
+                >
+                  <UserButton.MenuItems>
+                    <UserButton.Link label="Profile" href="/profile" labelIcon={<User className="w-4 h-4" />} />
+                  </UserButton.MenuItems>
+                </UserButton>
               </div>
             )}
             {isLoaded && !isSignedIn && (
@@ -324,7 +328,11 @@ export function Header({ hideJoin }: { hideJoin?: boolean }) {
               <div style={{ padding: "3px 6px", display: "flex", alignItems: "center" }}>
                 <UserButton
                   appearance={{ elements: { userButtonAvatarBox: "w-7 h-7 border border-white/10" } }}
-                />
+                >
+                  <UserButton.MenuItems>
+                    <UserButton.Link label="Profile" href="/profile" labelIcon={<User className="w-4 h-4" />} />
+                  </UserButton.MenuItems>
+                </UserButton>
               </div>
             )}
             {isLoaded && !isSignedIn && (
@@ -465,7 +473,11 @@ export function Header({ hideJoin }: { hideJoin?: boolean }) {
                 style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
               >
                 <div style={{ transform: "scale(1.1)" }}>
-                  <UserButton appearance={{ elements: { userButtonAvatarBox: "w-10 h-10 border border-white/10" } }} />
+                  <UserButton appearance={{ elements: { userButtonAvatarBox: "w-10 h-10 border border-white/10" } }}>
+                    <UserButton.MenuItems>
+                      <UserButton.Link label="Profile" href="/profile" labelIcon={<User className="w-4 h-4" />} />
+                    </UserButton.MenuItems>
+                  </UserButton>
                 </div>
               </li>
             )}

@@ -15,6 +15,8 @@ export default function EditMemberForm({ member, isAdmin = true }: { member: Tea
     category: member.category || "Core",
     gmail: member.gmail || "",
     linkedin: member.linkedin || "",
+    instagram: member.instagram || "",
+    about: member.about || "",
   });
   const [photo, setPhoto] = useState(member.photo || "");
   const [loading, setLoading] = useState(false);
@@ -134,6 +136,32 @@ export default function EditMemberForm({ member, isAdmin = true }: { member: Tea
               onChange={handleChange}
               className="w-full bg-black border border-zinc-800 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500 transition-colors"
               placeholder="https://linkedin.com/in/username"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-zinc-300">Instagram URL</label>
+            <input
+              type="text"
+              name="instagram"
+              value={formData.instagram}
+              onChange={handleChange}
+              className="w-full bg-black border border-zinc-800 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500 transition-colors"
+              placeholder="https://instagram.com/username"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-zinc-300">About (Short bio)</label>
+            <textarea
+              name="about"
+              value={formData.about}
+              onChange={(e: any) => handleChange(e)}
+              className="w-full bg-black border border-zinc-800 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500 transition-colors"
+              placeholder="e.g. Computer Science Senior..."
+              rows={2}
             />
           </div>
         </div>

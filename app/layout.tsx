@@ -3,6 +3,9 @@ import { Syne, Inter } from "next/font/google";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ClerkProvider } from "@clerk/nextjs";
+import { currentUser, clerkClient } from "@clerk/nextjs/server";
+import { dark } from "@clerk/themes";
+import { prisma } from "@/lib/prisma";
 import { getSettings } from "@/app/actions/settings";
 import { UnifiedBackground } from "@/components/UnifiedBackground";
 import "./globals.css";
@@ -41,8 +44,48 @@ export default async function RootLayout({
 }>) {
   const settings = await getSettings();
 
+  // Auto-assign member role on login based on TeamMember table
+  const user = await currentUser();
+  if (user) {
+    const role = user.publicMetadata?.role;
+    const email = user.emailAddresses?.[0]?.emailAddress;
+    
+    if (!role && email) {
+      const isMember = await prisma.teamMember.findFirst({ where: { gmail: email } });
+      if (isMember) {
+        const client = await clerkClient();
+        await client.users.updateUserMetadata(user.id, {
+          publicMetadata: { role: "member" }
+        });
+      }
+    }
+  }
+
   return (
-    <ClerkProvider>
+    <ClerkProvider appearance={{
+      baseTheme: dark,
+      variables: {
+        colorPrimary: '#4F9EFF',
+        colorBackground: '#111111',
+        colorInputBackground: '#222222',
+        colorInputText: '#EDEDED',
+        colorText: '#EDEDED',
+        colorTextSecondary: '#A1A1AA',
+        colorBackgroundOnProfile: '#111111',
+        alpha: 0.9,
+      },
+      elements: {
+        card: "bg-[#141418]/95 backdrop-blur-xl border border-white/10 shadow-2xl",
+        navbar: "hidden",
+        userButtonPopoverCard: "bg-[#141418]/95 backdrop-blur-xl border border-white/10 shadow-2xl text-white",
+        userButtonPopoverActionButtonText: "text-white font-medium",
+        userButtonPopoverActionButtonIcon: "text-white",
+        userButtonPopoverActionButton: "hover:bg-white/10 text-white",
+        userPreviewMainIdentifier: "text-white font-semibold",
+        userPreviewSecondaryIdentifier: "text-gray-400",
+        userButtonPopoverFooter: "hidden"
+      }
+    }}>
       <html lang="en">
         <body
           className={`${syne.variable} ${inter.variable} flex min-h-screen flex-col antialiased`}

@@ -1,6 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-
+import { Linkedin, Instagram, Mail } from "lucide-react";
 
 type TeamMember = {
   id: number;
@@ -10,6 +10,8 @@ type TeamMember = {
   photo: string;
   gmail: string;
   linkedin: string;
+  instagram?: string;
+  about?: string;
 };
 
 interface TeamClientProps {
@@ -174,10 +176,11 @@ export default function TeamClient({ members, loggedInEmail }: TeamClientProps) 
         .team-member:hover { transform: translateY(-10px); border-color: rgba(139, 92, 246, 0.3); box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3); } .team-member:hover::before { transform: scaleX(1); }
         .team-member-image { position: relative; width: 100%; height: 260px; overflow: hidden; }
         .team-member-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; filter: grayscale(30%); } .team-member:hover .team-member-image img { transform: scale(1.05); filter: grayscale(0%); }
-        .team-member-info { padding: 1.5rem; text-align: center; }
-        .team-member-name { font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 600; margin-bottom: 0.35rem; }
-        .team-member-role { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; }
-        .team-member-socials { display: flex; gap: 0.5rem; justify-content: center; } .team-member-socials .social-link { width: 36px; height: 36px; font-size: 0.9rem; }
+        .team-member-info { padding: 1.5rem; text-align: left; display: flex; flex-direction: column; min-height: 180px; }
+        .team-member-name { font-family: 'Space Grotesk', sans-serif; font-size: 1.15rem; font-weight: 600; margin-bottom: 0.15rem; }
+        .team-member-role { font-size: 0.85rem; color: var(--accent-blue); margin-bottom: 0.75rem; font-weight: 500; }
+        .team-member-bio { font-size: 0.8rem; color: rgba(255,255,255,0.65); line-height: 1.5; margin-bottom: 1rem; flex-grow: 1; }
+        .team-member-socials { display: flex; gap: 0.5rem; justify-content: flex-start; margin-top: auto; } .team-member-socials .social-link { width: 32px; height: 32px; font-size: 0.9rem; align-items: center; justify-content: center; display: flex; }
         .department-filter { display: flex; justify-content: center; gap: 1rem; margin-bottom: 4rem; flex-wrap: wrap; }
         .filter-btn { padding: 0.75rem 1.5rem; border-radius: 50px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.3s ease; }
         .filter-btn:hover { border-color: var(--accent-purple); color: var(--text-primary); } .filter-btn.active { background: var(--gradient-1); border-color: transparent; color: white; }
@@ -292,10 +295,12 @@ export default function TeamClient({ members, loggedInEmail }: TeamClientProps) 
                   </div>
                   <div className="team-member-info">
                     <h4 className="team-member-name">{member.name}</h4>
-                    <p className="team-member-role">{member.role}</p>
+                    <p className="team-member-role text-[#00c8ff]">{member.role}</p>
+                    {member.about && <p className="team-member-bio">{member.about}</p>}
                     <div className="team-member-socials">
-                      {member.linkedin && <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="social-link">in</a>}
-                      {member.gmail && member.gmail !== '—' && <a href={`mailto:${member.gmail}`} className="social-link">✉</a>}
+                      {member.linkedin && <a href={member.linkedin} target="_blank" rel="noopener noreferrer" className="social-link"><Linkedin className="w-4 h-4" /></a>}
+                      {member.instagram && <a href={member.instagram} target="_blank" rel="noopener noreferrer" className="social-link"><Instagram className="w-4 h-4" /></a>}
+                      {member.gmail && member.gmail !== '—' && <a href={`mailto:${member.gmail}`} className="social-link"><Mail className="w-4 h-4" /></a>}
                     </div>
                   </div>
                 </div>
